@@ -127,3 +127,21 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+© 2022 GitHub, Inc.
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+# file: ~/.gitignore_global
+.DS_Store
+.idea
