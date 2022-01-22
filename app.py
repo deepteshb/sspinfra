@@ -1,14 +1,9 @@
 from flask import Flask,render_template,url_for,session
 from flask_sqlalchemy import SQLAlchemy
-from database import db_conn_response
-from configparser import ConfigParser
+from database import get_response
 
 app = Flask(__name__)
-dbconfig = ConfigParser()
-dbconfig.read('database.ini')
-app.config['SQLALCHEMY_DATABASE_URI'] = dbconfig.get('postgresdb','uri')
 
-db_conn_response()
 
 @app.route("/")
 def index():
@@ -49,7 +44,8 @@ def addservice():
 
 @app.route("/cisghome")
 def cisghome():
-    return render_template('cisgservice.html')
+    get_response()
+    return render_template('cisgservices.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
