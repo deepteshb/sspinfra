@@ -116,39 +116,44 @@
                 <h2 class="text-center">Add Service in Catalog</h2>
                 <form class="login-form">
                     <div class="form-group">
+                        <div class="form-group">
+                            <label for="exampleInputPassword1" class="text-uppercase">Platform</label>
+                            <select>
+                                <option>option1</option>
+                            </select>
+                        </div>
                         <label for="exampleInputEmail1" class="text-uppercase">Product Name</label>
-                        <input type="text" class="form-control" placeholder="">
+                        <select>
+                            <option>option1</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlSelect1">Component Name</label>
-                        <input type="text" class="form-control" placeholder="">
+                        <select>
+                            <option>option1</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlSelect1" class="text-uppercase">Product Version</label>
-                        <input type="text" class="form-control" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1" class="text-uppercase">Platform</label>
                         <select>
-                            {%for items in range (0,len(results)) %}
-                            <option>{{results[item]}}</option>
+                            <option>option1</option>
                         </select>
-                        
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1" class="text-uppercase">Template Name</label>
-                        <input type="password" class="form-control" placeholder="">
+                        <input type="text" class="form-control" placeholder="">
                     </div>
                     <hr>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-login">Add</button>
+                        <button type="submit" class="btn btn-login">Add New Template</button>
                     </div>
                 </form>
-                <div class="copy-text">Created with <i class="fa fa-heart"></i> by <b>Tools & Automation Team.</b></div>
+                
             </div>
 
         </div>
 
 
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

@@ -112,42 +112,25 @@
     <div class="row">
         <div class="col-md-4 login-sec">
             <h2 class="text-center">Register Here</h2>
-            <form class="login-form">
+            <form class="login-form" method="POST" action="/register">
                 <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-uppercase">email</label>
+                    <label for="exampleInputEmail1" name='email' class="text-uppercase">email</label>
                     <input type="text" class="form-control" placeholder="">
-
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1" class="text-uppercase">password</label>
+                    <label for="exampleInputPassword1" name= 'pwd'class="text-uppercase">password</label>
                     <input type="password" class="form-control" placeholder="">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1" class="text-uppercase">re-enter password</label>
+                    <label for="exampleInputPassword1" name='repwd' class="text-uppercase">re-enter password</label>
                     <input type="password" class="form-control" placeholder="">
                 </div>
                 <hr>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect1">Choose Security Question</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Mothers Name</option>
-                        <option>Lucky Number</option>
-                        <option>Favourity Color</option>
-                        <option>Birth Place</option>
-                        <option>AIRID</option>
-                    </select>
                     <br>
-                    <label for="exampleInputPassword1" class="text-uppercase">answer</label>
-                    <input type="password" class="form-control" placeholder="">
-
-
-                    <br>
-
-                    <button type="submit" class="btn btn-login">Submit</button>
-
+                    <button type="submit" name='submit' class="btn btn-login">Submit</button>
                 </div>
             </form>
-            <div class="copy-text">Created with <i class="fa fa-heart"></i> by <b>Tools & Automation Team.</b></div>
         </div>
         <div class="col-md-8 banner-sec">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
