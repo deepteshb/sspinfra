@@ -3,10 +3,10 @@
 from flask import g
 from configparser import ConfigParser
 import sqlite3
-'''
+
 #database connection function - part of database helpers
 def connect_db():
-    sql = sqlite.connect('sspinfra.db')
+    sql = sqlite3.connect('sspinfra.db')
     sql.row_factory = sqlite3.Row
     return sql
 
@@ -14,15 +14,15 @@ def connect_db():
 def get_db():
     if not hasattr(g, 'sqlite_db'):
         g.sqlite_db = connect_db()
-    return g.sqlite_db #
-'''
+    return g.sqlite_db
 
 
-conn = sqlite3.connect('sspinfra.db', check_same_thread=False)
 
-def get_response():
+# conn = sqlite3.connect('sspinfra.db', check_same_thread=False)
+
+'''def get_response():
     cur = conn.cursor()
     query = cur.execute('select platform from platform').fetchall()
     #return print (list(zip(*query))[1])
     return print(query)
-    conn.close()
+    conn.close()'''
