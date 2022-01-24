@@ -128,6 +128,14 @@
                         <input type="text" class="form-control" placeholder="">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputPassword1" class="text-uppercase">Platform</label>
+                        <select>
+                            {%for items in range (0,len(results)) %}
+                            <option>{{results[item]}}</option>
+                        </select>
+                        
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputPassword1" class="text-uppercase">Template Name</label>
                         <input type="password" class="form-control" placeholder="">
                     </div>
