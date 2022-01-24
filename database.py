@@ -3,7 +3,7 @@
 from flask import g
 from configparser import ConfigParser
 import sqlite3
-
+'''
 #database connection function - part of database helpers
 def connect_db():
     sql = sqlite.connect('sspinfra.db')
@@ -14,10 +14,11 @@ def connect_db():
 def get_db():
     if not hasattr(g, 'sqlite_db'):
         g.sqlite_db = connect_db()
-    return g.sqlite_db
+    return g.sqlite_db #
+'''
 
 
-#conn = sqlite3.connect('sspinfra.db', check_same_thread=False)
+conn = sqlite3.connect('sspinfra.db', check_same_thread=False)
 
 def get_response():
     cur = conn.cursor()

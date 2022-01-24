@@ -1,7 +1,7 @@
-
-
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{url_for('login')}}"><span style="color: darkorange;">SSPInfra</span></a>
+        <a class="navbar-brand" href="{{url_for('login')}}">
+            <span><img src="{{url_for('static',filename = 'images/SG-Logo.png')}}"></span>
+            <span style="color: darkorange;">SSPINFRA</span></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -16,7 +16,7 @@
                         My Services </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('register')}}" id="" role="" data-toggle="" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link" href="{{url_for('login')}}" id="" role="" data-toggle="" aria-haspopup="true" aria-expanded="false">
                         User Setup </a>
                 </li>
                 <li class="nav-item">
