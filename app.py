@@ -5,10 +5,9 @@ import os
 import datetime
 import sys
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+
 
 #database helpers
 @app.teardown_appcontext
@@ -30,13 +29,13 @@ def login():
         print(uname)
         groupid = db.execute('SELECT username, gid FROM users WHERE username=?', [name]).fetchone()[1]
         print(groupid)
-        
+              
         if uname == name and groupid == 1:
             session['user'] = uname
             return render_template('cisgservices.html')
         elif uname == name and groupid == 2:
             session['user'] = uname
-            return render_template('myservices.html')
+            return render_template('userservicelist.html')
         else:
             return render_template('loginerror.html')
     else:
@@ -47,13 +46,13 @@ def logout():
     session.pop('user', None)
     return render_template('logout.html')
 
-@app.route("/catalog", methods=['POST', 'GET'])
-def catalog():
-    return render_template('servicecatalog.html')
+@app.route("/launchinstances", methods=['POST', 'GET'])
+def launchinstances():
+    return render_template('launchinstances.html')
 
-@app.route("/myservices", methods=['POST', 'GET'])
-def myservices():
-    return render_template('myservices.html')
+@app.route("/userservicelist", methods=['POST', 'GET'])
+def userservicelist():
+    return render_template('userservicelist.html')
 
 @app.route("/addtemplate", methods=['POST', 'GET'])
 def addtemplate():
@@ -62,6 +61,12 @@ def addtemplate():
 @app.route("/cisghome", methods=['POST', 'GET'])
 def cisghome():
     return render_template('cisgservices.html')
+
+
+# This particular route is for testing purposes only 
+@app.route("/testpage", methods=['POST', 'GET'])
+def testpage():
+   return render_template('testpage.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
