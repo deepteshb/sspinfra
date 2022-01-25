@@ -2,67 +2,50 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <h2 class="login-sec">My Services</h2>
+        <div class="col login-sec">
+          <h2 >Existing Templates</h2>
+        <a class="btn btn-primary" href="{{url_for('addtemplate')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Template</a>
+      </div>
+    </div>
         <div class="row">
+          <div class="form-group">
+            <div class="input-group mb-3">
+                <input type="search" class="form-control" placeholder="Search existing templates by name"
+                    aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
             <div class="col-12">
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col">Service Name</th>
-                    <th scope="col">Service Type</th>
-                    <th scope="col">Date Launched</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Service Type</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Template Name</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Version</th>
+                    <th scope="col">Component</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <th scope="row">1</th>
-                    <td>VM1-Windows 10 Std Edition</td>
-                    <td>VM</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
+                    <td>Nugget_WindowsServer2016_CMP_16.0.0_APPServer</td>
+                    <td>Nugget</td>
+                    <td>CMP</td>
+                    <td>16.0.0</td>
+                    <td>APPSERVER</td>
                     <td>
                       <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
-                      <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>VM2-Ubuntu Std 20.1</td>
-                    <td>VM</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
-                    <td>
-                      <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
-                      <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>VM3-VAPP-CMP15.2.0</td>
-                    <td>App</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
-                    <td>2.846</td>
-                    <td>
-                      <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
-                      <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
                     <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-        
     </div>
-    
-
 </div>
 {% endblock %}

@@ -6,7 +6,7 @@ import sqlite3
 
 #database connection function - part of database helpers
 def connect_db():
-    sql = sqlite3.connect('sspinfra.db')
+    sql = sqlite3.connect('sspdbinfra.db')
     sql.row_factory = sqlite3.Row
     return sql
 

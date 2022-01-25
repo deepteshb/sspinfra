@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 login-sec">
+            <h2 class="text-center">Successful Logout !</h2>
+            <form class="login-form">
+                <div class="form-group">
+                    <p>The username is not enrolled for this application. Contact your system administrator to get you enrolled into the application.
+                        <br>
+                        Click <a href="{{url_for('login')}}">here</a> for trying login into the system or open a new browser.
+                    </p>
+                </div>
+            </form>
+            <div class="copy-text">Created with <i class="fa fa-heart"></i> by <b>Tools & Automation Team.</b></div>
+        </div>
+        <div class="col-md-8 banner-sec">
+            <img class="d-block img-fluid" style=border-radius:20px; src= "{{url_for('static', filename="images/MissionVisionValues_1280x7208_.jpg")}}"
+            alt="First slide">
+        </div>
+    </div>
+    {% endblock %}

@@ -1,91 +1,89 @@
 {% extends 'base.html'%}
 {% block content %}
-
 <div class="container">
     <div class="row">
-        <h2 class="login-sec">Available Services</h2>
-        <div class="card-group">
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This card has even longer content than the first to show that equal height
-                        action.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
+        <div class="col login-sec">
+            <h2 class="">Launch Product</h2>
+            <a class="btn btn-primary" href="{{url_for('catalog')}}"><i class="fa fa-backward" aria-hidden="true"></i>&nbsp;Go Back</a>
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Version</th>
+                    <th>Component</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select>
+                            <option>Nugget</option>
+                            <option>MGM</option>
+                            <option>SG-Internal</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>CMP</option>
+                            <option>BI</option>
+                            <option>IView</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>16.0.1</option>
+                            <option>16.0.2</option>
+                            <option>13.0.1</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>AppServer</option>
+                            <option>DBServer</option>
+                            <option>Instance</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <select>
+                            <option>Nugget</option>
+                            <option>MGM</option>
+                            <option>SG-Internal</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>CMP</option>
+                            <option>BI</option>
+                            <option>IView</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>16.0.1</option>
+                            <option>16.0.2</option>
+                            <option>13.0.1</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option>AppServer</option>
+                            <option>DBServer</option>
+                            <option>Instance</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div>
-        <h2 class="login-sec">Available Apps</h2>
-        <div class="card-group">
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This content is a little bit longer.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="..." alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                        additional content. This card has even longer content than the first to show that equal height
-                        action.</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                    <btn class="btn btn-primary float-right">Launch</btn>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-{% endblock %}
+    {% endblock %}
