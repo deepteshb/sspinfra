@@ -1,0 +1,71 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container" style="height: auto;">
+    <div class="row">
+        <div class="col login-sec">
+            <h2 class="">Add Template</h2>
+            <div class="card" style="background-color: rgb(235, 235, 235); padding: 10px;">
+                <div class="form-group">
+                    <div class="hstack gap-3">
+                        <label>Platform</label>
+                        <select class="">
+                            <option>VmWare</option>
+                            <option>AWS</option>
+                            <option>Azure</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Product</label>
+                        <select class="">
+                            <label></label>
+                            <option>CMP</option>
+                            <option>BI</option>
+                            <option>SDS</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Version</label>
+                        <select class="">
+                            <option>16.0.1</option>
+                            <option>13.2.10</option>
+                            <option>1.0.0</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Component</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <hr>
+                <div class="hstack gap-3">
+                    <label>Template Name</label>
+                    <input type="text">
+                    <div class="vr"></div>
+                    <label>Action</label>
+                    <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <hr>
+            <div id="review">
+                <h3 class="">Review Components</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Version</th>
+                            <th>Component</th>
+                            <th>TemplateName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CMP</td>
+                            <td>16.0.1</td>
+                            <td>APPServer</td>
+                            <td>VMWARECLOUD_WINSRV2016_CMP_16.0.1_APPSERVER_V1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="btn btn-primary">Save Template <i class="fas fa-arrow-alt-from-left"></i></button>
+        </div>
+        {% endblock %}

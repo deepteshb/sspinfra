@@ -1,0 +1,91 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col login-sec">
+            <h2 class="">Launch Product</h2>
+            <a class="btn btn-primary" href="{{url_for('launchinstances')}}"><i class="fa fa-step-backward"
+                    aria-hidden="true"></i>&nbsp;Go Back</a>
+            <button id="add-row" class="btn btn-primary" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
+            <button id="remove-row" class="btn btn-primary" onclick='deleterow()'><i class="fa fa-trash" aria-hidden="true"></i> Delete Row
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Version</th>
+                    <th>Component</th>
+                    <th># Instances</th>
+                    <th># HDD</th>
+                    <th>Size of HDD</th>
+                    <th>RAM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3"><strong><i>CMP</i></strong></textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">16.0.1</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">AppServer</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">2</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">1</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">30GB</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">4GB</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3"><strong><i>BI</i></strong></textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">15.2.1</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">AppServer</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">1</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">2</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">60GB</textarea>
+                    </td>
+                    <td>
+                        <text class="form-control" name="" id="" rows="3">4GB</textarea>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <button class="btn btn-primary">Confirm Launch <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+    </div>
+    
+    {% endblock %}
+    
+ 
+   

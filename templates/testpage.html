@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Product</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for items in product %}
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block scripts %}
+<script>
+  $(document).ready(function () {
+    $('#data').DataTable();
+  });
+</script>
+{% endblock %}

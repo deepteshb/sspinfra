@@ -1,15 +1,28 @@
-import psycopg2
-import sqlalchemy
-from sqlalchemy import create_engine, text
-engine = create_engine('postgresql+psycopg2://postgres:Dresident1@20.44.49.83/sspinfra')
+#import psycopg2
+#import sqlalchemy
+from flask import g
+from configparser import ConfigParser
+import sqlite3
 
-conn = engine.connect()
+#database connection function - part of database helpers
+def connect_db():
+    sql = sqlite3.connect('sspdbinfra.db')
+    sql.row_factory = sqlite3.Row
+    return sql
 
-def db_conn_response():
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT datname FROM pg_database")).fetchall()
-        #print(result)
-        if result == [('postgres',), ('template1',), ('template0',), ('sspinfra',)]:
-            print('Connection Successful')
-        else:
-            print('Connection Unsuccessful')
+#database get database connection for app in context - part of database helpers
+def get_db():
+    if not hasattr(g, 'sqlite_db'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+
+
+
+# conn = sqlite3.connect('sspinfra.db', check_same_thread=False)
+
+'''def get_response():
+    cur = conn.cursor()
+    query = cur.execute('select platform from platform').fetchall()
+    #return print (list(zip(*query))[1])
+    return print(query)
+    conn.close()'''
