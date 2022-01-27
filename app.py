@@ -1,6 +1,7 @@
 from flask import Flask,render_template,url_for,session,g,request,session,redirect
 from flask_sqlalchemy import SQLAlchemy
 from database import connect_db, get_db
+import sqlite3
 import os
 import datetime
 import sys
@@ -24,21 +25,13 @@ def login():
     if request.method == 'POST':
         db = get_db()
         name = request.form['userid']
-        print(name)
-        uname = db.execute('SELECT username, gid FROM users WHERE username=?', [name]).fetchone()[0]
-        print(uname)
-        groupid = db.execute('SELECT username, gid FROM users WHERE username=?', [name]).fetchone()[1]
-        print(groupid)
+       
+        cur = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchall()
+        for item in cur:
+            print(item['username'])
+            #print('username provided by user is ' + name + '| username in db is '+ row.username + '|group id is ' + str(row.gid))
               
-        if uname == name and groupid == 1:
-            session['user'] = uname
-            return render_template('cisgservices.html')
-        elif uname == name and groupid == 2:
-            session['user'] = uname
-            return render_template('userservicelist.html')
-        else:
-            return render_template('loginerror.html')
-    else:
+        
         return render_template('login.html')
 
 @app.route("/logout", methods=['POST', 'GET'])
@@ -66,7 +59,8 @@ def cisghome():
 # This particular route is for testing purposes only 
 @app.route("/testpage", methods=['POST', 'GET'])
 def testpage():
-   return render_template('testpage.html')
+    
+    return render_template('testpage.html')
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
