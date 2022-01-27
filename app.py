@@ -22,17 +22,21 @@ def index():
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
-        db = get_db()
-        name = request.form['userid']
-       
-        cur = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchall()
-        for item in cur:
-            print(item['username'])
-            #print('username provided by user is ' + name + '| username in db is '+ row.username + '|group id is ' + str(row.gid))
-              
-        
-        return render_template('login.html')
+        if request.method == 'POST':
+            db = get_db()
+            name = request.form['userid']
+            uname = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[1]
+            gid =  db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[2]
+            print(uname)
+            if uname == name and gid == 1:
+                return render_template('cisgservices.html')
+            elif uname == name and gid == 2:
+                return render_template('userservicelist.html')
+            else:
+                return render_template('loginerror.html')
+        else:
+            return render_template('login.html')
+        return('login.html')
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
@@ -54,6 +58,10 @@ def addtemplate():
 @app.route("/cisghome", methods=['POST', 'GET'])
 def cisghome():
     return render_template('cisgservices.html')
+
+@app.route("/reviewinstances", methods=['POST', 'GET'])
+def review():
+    return render_template('reviewinstances.html')
 
 
 # This particular route is for testing purposes only 

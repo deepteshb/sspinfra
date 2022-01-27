@@ -1,61 +1,71 @@
 {% extends 'base.html'%}
 {% block content %}
-<div class="container">
+<div class="container" style="height: auto;">
     <div class="row">
         <div class="col login-sec">
             <h2 class="">Add Template</h2>
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Choose Platform</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Choose Product</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Choose Components</a>
-                </li>
-            </ul>
+            <div class="card" style="background-color: rgb(235, 235, 235); padding: 10px;">
+                <div class="form-group">
+                    <div class="hstack gap-3">
+                        <label>Platform</label>
+                        <select class="">
+                            <option>VmWare</option>
+                            <option>AWS</option>
+                            <option>Azure</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Product</label>
+                        <select class="">
+                            <label></label>
+                            <option>CMP</option>
+                            <option>BI</option>
+                            <option>SDS</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Version</label>
+                        <select class="">
+                            <option>16.0.1</option>
+                            <option>13.2.10</option>
+                            <option>1.0.0</option>
+                        </select>
+                        <div class="vr"></div>
+                        <label>Component</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <hr>
+                <div class="hstack gap-3">
+                    <label>Template Name</label>
+                    <input type="text">
+                    <div class="vr"></div>
+                    <label>Action</label>
+                    <button class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+            </div>
+            <hr>
+            <div id="review">
+                <h3 class="">Review Components</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Version</th>
+                            <th>Component</th>
+                            <th>TemplateName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CMP</td>
+                            <td>16.0.1</td>
+                            <td>APPServer</td>
+                            <td>VMWARECLOUD_WINSRV2016_CMP_16.0.1_APPSERVER_V1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button class="btn btn-primary">Save Template <i class="fas fa-arrow-alt-from-left"></i></button>
         </div>
-        <div class="row m-1">
-            <h2 class="">Select your platform</h2>
-            <div class="card-group">
-                <div class="card">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">VMWare</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
-                        <btn class="btn btn-primary float-right">Select</btn>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Azure</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
-                        <btn class="btn btn-primary float-right">Select</btn>
-                    </div>
-                </div>
-                <div class="card">
-                    <img class="card-img-top" src="..." alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">AWS</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
-                        <btn class="btn btn-primary float-right">Select</btn>
-                    </div>
-                </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
+        {% endblock %}

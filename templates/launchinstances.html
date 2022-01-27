@@ -1,20 +1,22 @@
 {% extends 'base.html'%}
-
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col login-sec">
             <h2 class="">Launch Product</h2>
+            <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able to see the associated Products and Components for the customer. Then you can add additional details to create your launch configuration.
+                Once you have decided on the launch configuration submit your request. Your request will be queued and once the infrastructure is provisioned you will recieve an email with details.
+            </p>
             <a class="btn btn-primary" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
                     aria-hidden="true"></i>&nbsp;Go Back</a>
             <button id="add-row" class="btn btn-primary" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
-            <button id="remove-row" class="btn btn-primary" onclick='removerow()'><i class="fa fa-trash" aria-hidden="true"></i> Delete Row
+            <button id="remove-row" class="btn btn-primary" onclick='deleterow()'><i class="fa fa-trash" aria-hidden="true"></i> Delete Row
             </button>
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th><input id='ch1' type="checkbox" id=selectall></th>
+                    <th><input type="checkbox" id=selectall></th>
                     <th>Customer</th>
                     <th>Product</th>
                     <th>Version</th>
@@ -41,7 +43,7 @@
                         <select>
                             <option>CMP</option>
                             <option>BI</option>
-                            <option>IView</option>
+                            <option>SDS</option>
                         </select>
                     </td>
                     <td>
@@ -55,7 +57,7 @@
                         <select>
                             <option>AppServer</option>
                             <option>DBServer</option>
-                            <option>Instance</option>
+                            <option>Interface</option>
                         </select>
                     </td>
                     <td>
@@ -77,10 +79,11 @@
     </div>
 
     <div>
-        <button class="btn btn-primary">Submit Request <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <button id="submit" class="btn btn-primary" onclick='submit()' >Submit Request <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <button id="submit" class="btn btn-danger" onclick='submit()' >Cancel <i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>
 
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 <script type="text/javascript">
     function addrow(){
         $('body > div  div  div.row  table  tbody').last().append(
@@ -89,7 +92,7 @@
                         '<input type="checkbox">'+
                     '</td>'+
                     '<td>'+
-                        '<select>'+
+                        '<select disabled>'+
                             '<option>Nugget</option>'+
                             '<option>MGM</option>'+
                             '<option>SG-Internal</option>'+
@@ -131,10 +134,16 @@
                 '</tr>'
         );
     }
-    function removerow(){
-        console.log('Hello World');
+    function deleterow(){
         $('body > div > div > div.row > table > tbody > tr').last().remove()
+        console.log('Row Deleted');
     }
+
+    function submit(){
+            console.log('redirecttonewwindow')
+            window.location = "http://127.0.0.1:5000/reviewinstances"
+            
+       }
 </script>
     
     {% endblock %}

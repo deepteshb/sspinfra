@@ -1,40 +1,95 @@
 {% extends 'base.html'%}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col login-sec">
-          <h2 >My Service List</h2>
-        <a class="btn btn-primary" href="{{url_for('launchinstances')}}"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Request New Service</a>
-      </div>
+  <div class="row">
+    <div class="col login-sec">
+      <h2>My Service List</h2>
+      <p class="card p-3" style="background-color: rgb(243, 243, 243);">You have the following machines for following customers already provisioned with you. </p>
+      <a class="btn btn-primary" href="{{url_for('launchinstances')}}"><i class="fa fa-plus"
+          aria-hidden="true"></i>&nbsp;Request New Service</a>
     </div>
-        <div class="row">
-            <div class="col-12">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Version</th>
-                    <th scope="col">Components</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>1</th>
-                    <td>Nugget</td>
-                    <td>CMP</td>
-                    <td>16.0.0</td>
-                    <td>2</td>
-                    <td>
-                      <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
-                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>CUSTOMER</th>
+            <th>PRODUCT</th>
+            <th>VERSION</th>
+            <th>COMPONENT</th>
+            <th># INSTANCES</th>
+            <th># HDD</th>
+            <th>SIZE OF HDD</th>
+            <th>RAM</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3"><strong><i>CMP</i></strong></textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">16.0.1</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">AppServer</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">2</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">1</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">30GB</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">4GB</textarea>
+            </td>
+            <td>
+              <button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
+              <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3"><strong><i>BI</i></strong></textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">15.2.1</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">AppServer</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">1</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">2</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">60GB</textarea>
+            </td>
+            <td>
+              <text class="form-control" name="" id="" rows="3">4GB</textarea>
+            </td>
+            <td>
+              <button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
+              <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 {% endblock %}
