@@ -51,9 +51,8 @@ def launchinstances():
     if request.method == 'GET':
                 db = get_db()
                 availableproducts = db.execute('SELECT cus.cust_id as customer, p.pname as product, co.type as component, v.version as version FROM versions v, product p, component co, customer cus WHERE v.cust_id =1 AND v.pid=p.id AND v.cid=co.id AND v.cust_id=cus.id ORDER BY v.cid').fetchall()
-                for rows in availableproducts:
-                    print(rows['customer']+'>'+ rows['product']+'>'+rows['component']+'>'+rows['version'])
                 
+                    
 
     return render_template('launchinstances.html')
 

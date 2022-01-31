@@ -1,5 +1,5 @@
 .login-block {
-    background: #DE6262;
+    background: #410657;
     /* fallback for old browsers */
     background: -webkit-linear-gradient(to bottom, #FFB88C, #DE6262);
     /* Chrome 10-25, Safari 5.1-6 */
@@ -48,32 +48,32 @@
 }
 
 .login-sec .copy-text i {
-    color: #FEB58A;
+    color: #410657;
 }
 
 .login-sec .copy-text a {
-    color: #E36262;
+    color: #410657;
 }
 
 .login-sec h2 {
     margin-bottom: 30px;
     font-weight: 800;
     font-size: 30px;
-    color: #DE6262;
+    color: #410657;
 }
 
 .login-sec h2:after {
     content: " ";
     width: 100px;
     height: 5px;
-    background: #FEB58A;
+    background: #410657;
     display: block;
     margin-top: 20px;
     border-radius: 3px;
 }
 
 .btn-login {
-    background: #DE6262;
+    background: hsl(284, 87%, 18%);
     color: #fff;
     font-weight: 600;
 }
