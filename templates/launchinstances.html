@@ -33,31 +33,31 @@
                         <input type="checkbox">
                     </td>
                     <td>
-                        <select>
-                            <option>Nugget</option>
-                            <option>MGM</option>
-                            <option>SG-Internal</option>
+                        <select id=1>
+                            <option value=1>Nugget</option>
+                            <option value=2>MGM</option>
+                            <option value=3>SG-Internal</option>
                         </select>
                     </td>
                     <td>
-                        <select>
-                            <option>CMP</option>
-                            <option>BI</option>
-                            <option>SDS</option>
+                        <select id=2 onchange='selectversion()'>
+                            <option value=1>CMP</option>
+                            <option value=2>BI</option>
+                            <option value=3>SDS</option>
                         </select>
                     </td>
                     <td>
-                        <select>
-                            <option>16.0.1</option>
-                            <option>16.0.2</option>
-                            <option>13.0.1</option>
+                        <select id=3>
+                            <option value=1>16.0.1</option>
+                            <option value=2'>16.0.2</option>
+                            <option value=3'>13.0.1</option>
                         </select>
                     </td>
                     <td>
-                        <select>
-                            <option>AppServer</option>
-                            <option>DBServer</option>
-                            <option>Interface</option>
+                        <select id=4 value=2>
+                            <option value=1>AppServer</option>
+                            <option value=2>DBServer</option>
+                            <option value=3>Interface</option>
                         </select>
                     </td>
                     <td>
@@ -86,7 +86,7 @@
     
 <script type="text/javascript">
     function addrow(){
-        $('body > div  div  div.row  table  tbody').last().append(
+        $('body > div > div > div.row > table > tbody').last().append(
             '<tr>'+
                     '<td>'+
                         '<input type="checkbox">'+
@@ -141,7 +141,7 @@
 
     function submit(){
             console.log('redirecttonewwindow')
-            window.location = "http://127.0.0.1:5000/reviewinstances"
+            window.location = "http://127.0.0.1:5000/reviewinstances"        
             
        }
 </script>
