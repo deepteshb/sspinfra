@@ -22,21 +22,24 @@ def index():
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
-        if request.method == 'POST':
-            db = get_db()
-            name = request.form['userid']
-            uname = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[1]
-            gid =  db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[2]
-            print(uname)
-            if uname == name and gid == 1:
-                return render_template('cisgservices.html')
-            elif uname == name and gid == 2:
-                return render_template('userservicelist.html')
+        try:
+            if request.method == 'POST':
+                db = get_db()
+                name = request.form['userid']
+                uname = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[1]
+                gid =  db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[2]
+                print(name)
+                if uname == name and gid == 1:
+                        return render_template('cisgservices.html')
+                elif uname == name and gid == 2:
+                            return render_template('userservicelist.html')
+                else:
+                    return render_template('loginerror.html')
             else:
-                return render_template('loginerror.html')
-        else:
-            return render_template('login.html')
-        return('login.html')
+                return render_template('login.html')
+        except TypeError:
+            return render_template('loginerror.html')
+        
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
@@ -45,6 +48,12 @@ def logout():
 
 @app.route("/launchinstances", methods=['POST', 'GET'])
 def launchinstances():
+    if request.method == 'GET':
+                db = get_db()
+                availableproducts = db.execute('SELECT cus.cust_id as customer, p.pname as product, co.type as component, v.version as version FROM versions v, product p, component co, customer cus WHERE v.cust_id =1 AND v.pid=p.id AND v.cid=co.id AND v.cust_id=cus.id ORDER BY v.cid').fetchall()
+                
+                    
+
     return render_template('launchinstances.html')
 
 @app.route("/userservicelist", methods=['POST', 'GET'])
