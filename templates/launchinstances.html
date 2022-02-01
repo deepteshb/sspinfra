@@ -7,10 +7,10 @@
             <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able to see the associated Products and Components for the customer. Then you can add additional details to create your launch configuration.
                 Once you have decided on the launch configuration submit your request. Your request will be queued and once the infrastructure is provisioned you will recieve an email with details.
             </p>
-            <a class="btn btn-primary" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
+            <a class="btn btn-sg" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
                     aria-hidden="true"></i>&nbsp;Go Back</a>
-            <button id="add-row" class="btn btn-primary" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
-            <button id="remove-row" class="btn btn-primary" onclick='deleterow()'><i class="fa fa-trash" aria-hidden="true"></i> Delete Row
+            <button id="add-row" class="btn btn-sg" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i> Add Row</button>
+            <button id="remove-row" class="btn btn-sg" onclick='deleterow()'><i class="fa fa-trash" aria-hidden="true"></i> Delete Row
             </button>
         </div>
         <table class="table">
@@ -67,12 +67,14 @@
     </div>
 
     <div>
-        <button id="submit" class="btn btn-primary" onclick='submit()' >Submit Request <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+        <button id="submit" class="btn btn-sg" onclick='submit()' >Submit Request <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
         <button id="submit" class="btn btn-danger" onclick='submit()' >Cancel <i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>
-
-    
 <script type="text/javascript">
+    $(function() {
+    console.log( "ready!" );
+});
+
     function addrow(){
         $('body > div > div > div.row > table > tbody').last().append(
             '<tr>'+
@@ -90,7 +92,7 @@
                         '<select>'+
                             '<option>CMP</option>'+
                             '<option>BI</option>'+
-                            '<option>SDS</option>'+
+                            '<option>IView</option>'+
                         '</select>'+
                     '</td>'+
                     '<td>'+
@@ -104,7 +106,7 @@
                         '<select>'+
                             '<option>AppServer</option>'+
                             '<option>DBServer</option>'+
-                            '<option>Interface</option>'+
+                            '<option>Instance</option>'+
                         '</select>'+
                     '</td>'+
                     '<td>'+
@@ -113,6 +115,7 @@
                 '</tr>'
         );
     }
+
     function deleterow(){
         $('body > div > div > div.row > table > tbody > tr').last().remove()
         console.log('Row Deleted');
@@ -120,12 +123,9 @@
 
     function submit(){
             console.log('redirecttonewwindow')
-            window.location = "http://127.0.0.1:5000/reviewinstances"        
-            
+            window.location = "http://127.0.0.1:5000/reviewinstances"         
        }
 </script>
-    
-    {% endblock %}
-    
+{% endblock %}
  
    
