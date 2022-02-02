@@ -1,5 +1,5 @@
 from flask import Flask,render_template,url_for,session,g,request,session,redirect
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
+#from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask_sqlalchemy import SQLAlchemy
 from database import connect_db, get_db
 import sqlite3
