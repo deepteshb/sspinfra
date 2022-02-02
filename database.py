@@ -7,7 +7,7 @@ import sqlite3
 #database connection function - part of database helpers
 def connect_db():
     sql = sqlite3.connect('sspdbinfra.db')
-    sql.row_factory = sqlite3.Row
+    sql.row_factory = lambda cursor, row: row[0]
     return sql
 
 #database get database connection for app in context - part of database helpers

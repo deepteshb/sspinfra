@@ -1,4 +1,5 @@
 from flask import Flask,render_template,url_for,session,g,request,session,redirect
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask_sqlalchemy import SQLAlchemy
 from database import connect_db, get_db
 import sqlite3
@@ -8,6 +9,7 @@ import sys
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
+
 
 
 #database helpers
@@ -26,9 +28,8 @@ def login():
             if request.method == 'POST':
                 db = get_db()
                 name = request.form['userid']
-                uname = db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[1]
-                gid =  db.execute('SELECT * FROM users WHERE username=?', [name]).fetchone()[2]
-                print(name)
+                uname = db.execute('SELECT username FROM users WHERE username=?', [name]).fetchone()
+                gid =  db.execute('SELECT gid FROM users WHERE username=?', [name]).fetchone()
                 if uname == name and gid == 1:
                         return render_template('cisgservices.html')
                 elif uname == name and gid == 2:
@@ -48,12 +49,6 @@ def logout():
 
 @app.route("/launchinstances", methods=['POST', 'GET'])
 def launchinstances():
-    if request.method == 'GET':
-                db = get_db()
-                availableproducts = db.execute('SELECT cus.cust_id as customer, p.pname as product, co.type as component, v.version as version FROM versions v, product p, component co, customer cus WHERE v.cust_id =1 AND v.pid=p.id AND v.cid=co.id AND v.cust_id=cus.id ORDER BY v.cid').fetchall()
-                
-                    
-
     return render_template('launchinstances.html')
 
 @app.route("/userservicelist", methods=['POST', 'GET'])

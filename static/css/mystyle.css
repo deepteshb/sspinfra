@@ -103,3 +103,25 @@
 .banner-text p {
     color: #fff;
 }
+
+.btn-sg{
+    background-color:#78067c;
+    color: #fff;
+    font-weight: 300;
+
+}
+.btn-sg:hover{
+    background-color:#410659;
+    color: #fff;
+    font-weight: 300;
+
+}
+
+.nav-item:hover{
+    font-weight: 600; 
+    
+}
+.nav-item:active{
+    font-weight: 600; 
+    
+}
