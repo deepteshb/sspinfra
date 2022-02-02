@@ -1,7 +1,5 @@
 from flask import Flask,render_template,url_for,session,g,request,session,redirect
-#from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask_sqlalchemy import SQLAlchemy
-from database import connect_db, get_db
 import sqlite3
 import os
 import datetime
@@ -9,8 +7,6 @@ import sys
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
-
-
 
 #database helpers
 @app.teardown_appcontext
@@ -49,6 +45,7 @@ def logout():
 
 @app.route("/launchinstances", methods=['POST', 'GET'])
 def launchinstances():
+
     return render_template('launchinstances.html')
 
 @app.route("/userservicelist", methods=['POST', 'GET'])
@@ -67,12 +64,11 @@ def cisghome():
 def review():
     return render_template('reviewinstances.html')
 
-
 # This particular route is for testing purposes only 
 @app.route("/testpage", methods=['POST', 'GET'])
 def testpage():
     
+    #customer = form.customer.data
     return render_template('testpage.html')
-
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)

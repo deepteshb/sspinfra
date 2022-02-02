@@ -1,27 +1,48 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <table id="data" class="table table-striped">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>Product</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for items in product %}
-        <tr>
-          <td>{{ product.id }}</td>
-          <td>{{ product.name }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
-{% block scripts %}
-<script>
-  $(document).ready(function () {
-    $('#data').DataTable();
-  });
-</script>
+<div class="container">
+  <div class="row">
+    <div class="col login-sec">
+      <h2 class="">Launch Product</h2>
+      <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able
+        to see the associated Products and Components for the customer. Then you can add additional details to
+        create your launch configuration.
+        Once you have decided on the launch configuration submit your request. Your request will be queued and
+        once the infrastructure is provisioned you will recieve an email with details.
+      </p>
+      <a class="btn btn-sg" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
+          aria-hidden="true"></i>&nbsp;Go Back</a>
+    </div>
+  </div>
+  <form class="form-row" action="">
+    <div>
+      <select name="" id="customers">
+        <option value="">Nugget</option>
+        <option value="">MGM</option>
+      </select>
+      <div class="vr"></div>
+      <select name="" id="availableproducts">
+        <option value="">CMP</option>
+        <option value="">BI</option>
+        <option value="">SDS</option>
+      </select>
+      <div class="vr"></div>
+      <select name="" id="availableversions">
+        <option value="">16.0.1</option>
+        <option value="">13.0.1</option>
+        <option value="">16.1.2</option>
+      </select>
+      <div class="vr"></div>
+      <select name="" id="componenttype">
+        <option value="">App</option>
+        <option value="">DB</option>
+        <option value="">Interface</option>
+      </select>
+      <div class="vr"></div>
+      <input type="text"></input>
+      <button class="btn btn-sg"><i class="fa fa-plus" aria-hidden="true"></i></button>
+      <button class="btn btn-sg"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    </div>
+  </form>
+</div>
 {% endblock %}
