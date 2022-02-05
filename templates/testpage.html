@@ -32,8 +32,9 @@
       {{form.version}}
       {{form.component}}
       {{form.instance}}
-      <input type="button" class="btn btn-primary" value="+">
-      <input type="button" class="btn btn-primary" value="-">
+      <button id="add-row" class="btn btn-sg" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i></button>
+      <button id="remove-row" class="btn btn-danger" onclick='deleterow()'><i class="fa fa-trash"
+          aria-hidden="true"></i></button>
     </form>
   </div>
 </div>
@@ -45,66 +46,74 @@
 
   selected_customer.onchange = function () {
     customer = selected_customer.value;
-    fetch('/testpage/' + customer).then(function(response) {
-      response.json().then(function(data){
+    fetch('/getproducts/' + customer).then(function (response) {
+      response.json().then(function (data) {
         let optionHTML = '';
-        for (product of data.products){
-          optionHTML += '<option value="'+ product.id + '">' + product.product + '</option>';
+        for (product of data.products) {
+          optionHTML += '<option value="' + product.id + '">' + product.product + '</option>';
         }
         selected_product.innerHTML = optionHTML;
 
       });
-      
+
     });
 
-    }
+  }
 
-  selected_product.onchange = function () {
+  selected_product.onfocus = function () {
     product = selected_product.value;
-    fetch('/versions/' + product).then(function(response) {
-      response.json().then(function(data){
+    fetch('/getversions/' + product).then(function (response) {
+      response.json().then(function (data) {
         let optionHTML = '';
-        for (version of data.versions){
-          optionHTML += '<option value="'+ version.id + '">' + version.version + '</option>';
+        for (version of data.versions) {
+          optionHTML += '<option value="' + version.id + '">' + version.version + '</option>';
         }
         selected_version.innerHTML = optionHTML;
 
       });
-      
+
     });
 
   }
 
-  selected_version.onchange = function () {
+  selected_version.onfocus = function () {
     version = selected_version.value;
-    fetch('/testpage/' + customer).then(function(response) {
-      response.json().then(function(data){
+    fetch('/getcomponents/' + version).then(function (response) {
+      response.json().then(function (data) {
         let optionHTML = '';
-        for (product of data.products){
-          optionHTML += '<option value="'+ product.id + '">' + product.product + '</option>';
+        for (component of data.components) {
+          optionHTML += '<option value="' + component.id + '">' + component.compname + '</option>';
         }
-        selected_product.innerHTML = optionHTML;
-
+        selected_component.innerHTML = optionHTML;
       });
-      
+
     });
 
   }
 
-  selected_component.onchange = function () {
-    component = selected_component.value;
-    fetch('/testpage/' + customer).then(function(response) {
-      response.json().then(function(data){
-        let optionHTML = '';
-        for (product of data.products){
-          optionHTML += '<option value="'+ product.id + '">' + product.product + '</option>';
-        }
-        selected_product.innerHTML = optionHTML;
+  function addrow() {
+    $('body > div > div > div.container > form').last().append(
+      '<form class="form-row" action="" method="POST">'+
+        '{{ form.csrf_token }}'+
+        '{{ form.customer }}'+
+        '{{ form.product }}'+
+        '{{ form.version }}'+
+        '{{ form.component }}'+
+        '{{ form.instance }}'+
+        '<button id="add-row" class="btn btn-sg" onclick=\'addrow()\'><i class="fa fa-plus" aria-hidden="true"></i></button>'+
+        '<button id="remove-row" class="btn btn-sg" onclick=\'deleterow()\'><i class="fa fa-trash" aria-hidden="true"></i></button>'+
+      '</form>'
+    );
+  }
 
-      });
-      
-    });
-
+  function deleterow() {
+    if ($('body > div > div > div.container > form').is('form:only-child')) {
+      alert('cannot delete last row');
+    }
+    else {
+      $('body > div > div > div.container > form').last().remove()
+      console.log('Row Deleted');
+    }
   }
 
 </script>

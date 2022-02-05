@@ -78,24 +78,9 @@ class Versions(db.Model):
 
 #============================================================================
 #DB-QUERIES
-def groups_query():
-    return Groups.query
-
-def users_query():
-    return Users.query
 
 
-def customer_query():
-    return Customers.query
-
-def products_query():
-    return Products.query
-
-def components_query():
-    return Components.query
-
-def version_query():
-    return Versions.query
+# def version_query(): return Versions.query
 
 #============================================================================
 
@@ -156,14 +141,14 @@ def review():
 def testpage():
     form = LaunchInstanceForm()
     form.customer.choices = [(customers.id,customers.cname)for customers in Customers.query.all()]
-    form.product.choices = []#[(products.id, products.pname)for products in Products.query] #.filter_by(id='1').all()
-    form.version.choices = []#[(versions.id, versions.version)for versions in Versions.query]
-    form.component.choices = []  #[(components.id, components.compname)for components in Components.query]
+    form.product.choices = ['--select--']#[(products.id, products.pname)for products in Products.query] #.filter_by(id='1').all()
+    form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
+    form.component.choices = ['--select--']  #[(components.id, components.compname)for components in Components.query]
     return render_template('testpage.html', form=form )
 
-@app.route("/testpage/<customerid>", methods=['POST', 'GET'])
+@app.route("/getproducts/<customerid>", methods=['POST', 'GET'])
 def get_products_per_customer(customerid):
-        products_per_customer = db.session.query(Products.pname, Products.id).join(Versions, Products.id==Versions.product_id).filter(Versions.product_id==customerid).all()#.distinct(Products.id)
+        products_per_customer = db.session.query(Products.pname, Products.id).join(Versions, Products.id==Versions.product_id).filter(Versions.product_id==customerid).distinct(Products.id).all()#
         print(products_per_customer)
         availableproducts = []
         for items in products_per_customer:
@@ -175,7 +160,7 @@ def get_products_per_customer(customerid):
         print(availableproducts)
         return jsonify({"products" : availableproducts})
 
-@app.route("/versions/<productid>", methods=['POST', 'GET'])
+@app.route("/getversions/<productid>", methods=['POST', 'GET'])
 def get_versions_per_product(productid):
         versions_per_product = db.session.query(Versions.id, Versions.version, Products).join(Versions, Products.id==Versions.product_id).filter(Versions.product_id==productid).all()
         print(versions_per_product)
@@ -188,6 +173,20 @@ def get_versions_per_product(productid):
             print(versions)
         print(availableversions)
         return jsonify({"versions" : availableversions})
+
+@app.route("/getcomponents/<versionid>", methods=['POST', 'GET'])
+def get_components_per_version(versionid):
+        components_per_version = db.session.query(Components.id, Components.compname, Products, Versions).join(Versions, Products.id==Versions.product_id).filter(Versions.id==versionid).all()
+        print(components_per_version)
+        availablecomponents = []
+        for items in components_per_version:
+            component={}
+            component['id'] = items.id
+            component['compname'] = items.compname
+            availablecomponents.append(component)
+            print(component)
+        print(availablecomponents)
+        return jsonify({"components" : availablecomponents})
 
 #========ALL CODE ENDS HERE============
 
