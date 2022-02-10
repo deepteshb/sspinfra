@@ -78,13 +78,13 @@ class Versions(db.Model):
     comp_id = db.Column(db.Integer, db.ForeignKey('components.id')) 
 
 #============================================================================
-class LaunchRequests(db.Model):
+class launchrequests(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     customer = db.Column(db.String)
     product = db.Column(db.String)
     version = db.Column(db.String)
     component = db.Column(db.String)
-    instances = db.Column(db.String)
+    instances = db.Column(db.Integer)
 #============================================================================
 
 #DB-QUERIES
@@ -158,7 +158,7 @@ def testpage():
 
 @app.route("/getproducts/<customerid>", methods=['POST', 'GET'])
 def get_products_per_customer(customerid):
-        products_per_customer = db.session.query(Products.pname, Products.id).join(Versions, Products.id==Versions.product_id).filter(Versions.product_id==customerid).distinct(Products.id).all()#
+        products_per_customer = db.session.query(Products.pname, Products.id).join(Versions, Products.id==Versions.product_id).distinct(Products.id).all()#
         print(products_per_customer)
         availableproducts = []
         for items in products_per_customer:
@@ -201,13 +201,13 @@ def get_components_per_version(versionid):
 
 @app.route("/createformcollection/<strjson>", methods=['POST', 'GET'])
 def createformcollection(strjson):
-        response = json.loads(strjson)
-        connectdb = db.session.query(LaunchRequests).all()
-        print(connectdb)
-        #print(response)
-        for i in response:
-            print(i[customer])
-        return ('success')
+    response = json.loads(strjson)
+    for i in response:
+        insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'])
+        db.session.add(insertdatafordb)
+        db.session.commit()
+        print('successfully inserted data in db')
+    return redirect(url_for('userservicelist'))
 
 #========ALL CODE ENDS HERE============
 

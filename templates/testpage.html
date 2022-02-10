@@ -36,7 +36,7 @@
             <td>{{form.customer(class="customer", onchange="updateproduct(this)")}}
             </td>
             <td>
-              {{form.product(class="product",onfocus="updateversion(this)")}}
+              {{form.product(class="product",onchange="updateversion(this)")}}
             </td>
             <td>
               {{form.version(class="version",onfocus="updatecomponent(this)")}}
@@ -151,7 +151,7 @@
         '<td>{{form.customer(class="customer", onchange="updateproduct(this)")}}' +
         '</td>' +
         '<td>' +
-        '{{form.product(class="product",onfocus="updateversion(this)")}}' +
+        '{{form.product(class="product",onchange="updateversion(this)")}}' +
         '</td>' +
         '<td>' +
         '{{form.version(class="version",onfocus="updatecomponent(this)")}}' +
@@ -236,8 +236,6 @@
     strjson = strjson.substring(0, strjson.lastIndexOf(",")) + "]";
 
     console.log(strjson)
-
-
 
     fetch('/createformcollection/'+ strjson)
     .then(response => console.log("success"))
