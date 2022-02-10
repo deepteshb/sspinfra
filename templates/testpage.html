@@ -199,6 +199,18 @@
         $(this).attr('id', classy + "_" + id);
         $(this).attr('name', classy + "_" + id);
       });
+      $(this).find('td:nth-child(n)  input').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
+        //assigne new id and name
+        $(this).attr('id', classy + "_" + id);
+        $(this).attr('name', classy + "_" + id);
+      });
     });
   };
   //=============================================
@@ -228,7 +240,7 @@
           var id = $(this).attr('id');
           var value = $("#" + id).val();
           //console.log(" id: " + id + " value: " + value);
-          strjson = strjson + "\""+ "instance"+ "\"" + ":" + "\""+ value + "\"";
+          strjson = strjson + "\""+ id.substring(0,id.indexOf("_")) + "\"" + ":" + "\""+ value + "\"";
         }
       });
       strjson = strjson + "},";
