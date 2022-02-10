@@ -15,61 +15,63 @@
       <button id="" class="btn btn-sg add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
       <button id="" class="btn btn-sg remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th><input type="checkbox" id=selectall></th>
-          <th>Customer</th>
-          <th>Product</th>
-          <th>Version</th>
-          <th>Component</th>
-          <th># Instances</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            {{form.csrf_token(class="form")}}
-          </td>
-          <td>{{form.customer(class="customer", onchange="updateproduct(this)")}}
-          </td>
-          <td>
-            {{form.product(class="product",onfocus="updateversion(this)")}}
-          </td>
-          <td>
-            {{form.version(class="version",onfocus="updatecomponent(this)")}}
-          </td>
-          <td>
-            {{form.component(class="component")}}
-          </td>
-          <td>
-            {{form.instance(class="instance")}}
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
+    
+    <form id="collection1">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id=selectall></th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Version</th>
+            <th>Component</th>
+            <th># Instances</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {{form.csrf_token()}}
+            </td>
+            <td>{{form.customer(class="customer", onchange="updateproduct(this)")}}
+            </td>
+            <td>
+              {{form.product(class="product",onfocus="updateversion(this)")}}
+            </td>
+            <td>
+              {{form.version(class="version",onfocus="updatecomponent(this)")}}
+            </td>
+            <td>
+              {{form.component(class="component")}}
+            </td>
+            <td>
+              {{form.instance(class="instance")}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="submit" style="display: none;">
+    </form>
   </div>
-
   <div>
-    <button id="submit" class="btn btn-sg" onclick='submit()'>Submit Request <i class="fa fa-arrow-right"
+    <button id="submitnow" class="btn btn-sg" onclick="converttojson()">Submit Request <i class="fa fa-arrow-right"
         aria-hidden="true"></i></button>
-    <button id="submit" class="btn btn-danger" onclick='cancel()'>Cancel <i class="fa fa-trash"
+    <button id="cancelnow" class="btn btn-danger" onclick='cancel()'>Cancel <i class="fa fa-trash"
         aria-hidden="true"></i></button>
   </div>
 </div>
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   //=============================================
-  $( document ).ready(function() {
-    console.log( "ready!" );
+  $(document).ready(function () {
+    console.log("ready!");
     reAssignIdAndName();
-});
+  });
 
   //=============================================
   //$('.customer').change(function () {
-    function updateproduct(cust) {
-    customer = $("#"+cust.id).val();
+  function updateproduct(cust) {
+    customer = $("#" + cust.id).val();
     product_id = cust.id.substring(cust.id.indexOf("_"));
     console.log(customer);
     console.log(product_id)
@@ -77,11 +79,11 @@
       //console.log(response)
       response.json().then(function (data) {
         //console.log(data)
-        $("#product"+product_id).empty()
+        $("#product" + product_id).empty()
         for (product of data.products) {
           //console.log(product.product)
           //console.log(product.id)
-          $("#product"+product_id).append('<option value ="' + product.id + '">' + product.product + '</option>')
+          $("#product" + product_id).append('<option value ="' + product.id + '">' + product.product + '</option>')
         }
       });
     });
@@ -91,8 +93,8 @@
 
   //=============================================
   //$('.product').focus(function () {
-    function updateversion(prod){
-    product = $("#"+prod.id).val()
+  function updateversion(prod) {
+    product = $("#" + prod.id).val()
     version_id = prod.id.substring(prod.id.indexOf("_"));
     //console.log(product)
     //console.log(version)
@@ -100,12 +102,12 @@
       //console.log(response)
       response.json().then(function (data) {
         //console.log(data)
-        $("#version"+version_id).empty()
+        $("#version" + version_id).empty()
         for (version of data.versions) {
           //console.log($('.version').val())
           //console.log(version.id)
           //console.log(version.version)
-          $("#version"+version_id).append('<option value ="' + version.id + '">' + version.version + '</option>')
+          $("#version" + version_id).append('<option value ="' + version.id + '">' + version.version + '</option>')
           //console.log($("#version"+version_id).val())
         }
       });
@@ -114,10 +116,9 @@
 
 
   //=============================================
-
   //$('.version').focus(function () {
-    function updatecomponent(vers) {
-    version = $("#"+vers.id).val()
+  function updatecomponent(vers) {
+    version = $("#" + vers.id).val()
     component_id = vers.id.substring(vers.id.indexOf("_"));
     //console.log(version)
     //console.log(product)
@@ -126,12 +127,12 @@
       //console.log(response)
       response.json().then(function (data) {
         //console.log(data)
-        $("#component"+component_id).empty()
+        $("#component" + component_id).empty()
         for (component of data.components) {
           //console.log($('.component').val())
           //console.log(version.id)
           //console.log(version.version)
-          $("#component"+component_id).append('<option value ="' + component.id + '">' + component.compname + '</option>')
+          $("#component" + component_id).append('<option value ="' + component.id + '">' + component.compname + '</option>')
           //console.log($('.component').val())
         }
       });
@@ -139,16 +140,13 @@
   }
 
   //=============================================
-  var count = 0
   $('.add-row').click(
     function () {
-      count = count + 1
-      console.log(count)
-      console.log($("body > div > div > div.row > table > tbody").val())
-      $("body > div > div > div.row > table > tbody").last().append(
+      //console.log($("body > div > div > div.row > table > tbody").val())
+      $("body > div > div > div.row > form > table > tbody").last().append(
         '<tr>' +
         '<td>' +
-        '{{form.csrf_token(class="form")}}' +
+        '{{form.csrf_token()}}' +
         '</td>' +
         '<td>{{form.customer(class="customer", onchange="updateproduct(this)")}}' +
         '</td>' +
@@ -173,12 +171,12 @@
 
   //=============================================
   $('.remove-row').click(
-    function() {
-      if ($('body > div > div > div.row > table > tbody > tr').is('tr:only-child')) {
+    function () {
+      if ($('body > div > div > div.row > form > table > tbody > tr').is('tr:only-child')) {
         alert('cannot delete last row');
       }
       else {
-        $('body > div > div > div.row > table > tbody > tr').last().remove()
+        $('body > div > div > div.row > form > table > tbody > tr').last().remove()
         console.log('Row Deleted');
 
       }
@@ -186,24 +184,66 @@
   )
 
 
-//=============================================
-reAssignIdAndName = function(){
-        $('table tr').each(function(index){
-            $(this).find('td:nth-child(n) select').each(function(){
-            //id of input element
-            var id = $(this).attr('id');
-            var classy = $(this).attr('class');
-            //get index of underscrore
-            var underScoreIndex = id.indexOf('_');
-            //take id till underscore and append your index+1 value
-            id = id.substring(0,underScoreIndex+1)+(parseInt(index)+1);
-            //assigne new id and name
-            $(this).attr('id',classy+"_"+id); 
-            $(this).attr('name',classy+"_"+id);              
-            });
-        });
-    };
+  //=============================================
+  reAssignIdAndName = function () {
+    $('table tr').each(function (index) {
+      $(this).find('td:nth-child(n) select').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
+        //assigne new id and name
+        $(this).attr('id', classy + "_" + id);
+        $(this).attr('name', classy + "_" + id);
+      });
+    });
+  };
+  //=============================================
+  /* $("#submitnow").click(function () {
+    $("#collection1").submit()
+  }); */
+
   //=============================================
 
+  function converttojson() {
+    var strjson = "[";
+
+    $('form table tbody tr').each(function (index) {
+      strjson = strjson + "{";
+      $(this).find('td:nth-child(n) select').each(function () {
+        var id = $(this).attr('id');
+        var value = $("#" + id + " option:selected").text();
+        //console.log(" id: " + id + " value: " + value);
+        strjson = strjson + "\""+ id.substring(0,id.indexOf("_"))+ "\"" + ":" + "\""+ value + "\""+ ","
+
+      });
+      
+
+      $(this).find('td:nth-child(n)  input').each(function () {
+        var classy = $(this).attr('class');
+        if (classy == "instance") {
+          var id = $(this).attr('id');
+          var value = $("#" + id).val();
+          //console.log(" id: " + id + " value: " + value);
+          strjson = strjson + "\""+ "instance"+ "\"" + ":" + "\""+ value + "\"";
+        }
+      });
+      strjson = strjson + "},";
+    });
+    strjson = strjson.substring(0, strjson.lastIndexOf(",")) + "]";
+
+    console.log(strjson)
+
+
+
+    fetch('/createformcollection/'+ strjson)
+    .then(response => console.log("success"))
+    //.then(data => console.log(data));
+  }
+
+  //=============================================
 </script>
 {% endblock %}

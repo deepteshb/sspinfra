@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_cors import CORS
+import json
 import sqlite3
 import os
 import datetime
@@ -77,6 +78,15 @@ class Versions(db.Model):
     comp_id = db.Column(db.Integer, db.ForeignKey('components.id')) 
 
 #============================================================================
+class LaunchRequests(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    customer = db.Column(db.String)
+    product = db.Column(db.String)
+    version = db.Column(db.String)
+    component = db.Column(db.String)
+    instances = db.Column(db.String)
+#============================================================================
+
 #DB-QUERIES
 
 
@@ -156,37 +166,48 @@ def get_products_per_customer(customerid):
             products['id'] = items.id
             products['product'] = items.pname
             availableproducts.append(products)
-            print(products)
-        print(availableproducts)
+            #print(products)
+        #print(availableproducts)
         return jsonify({"products" : availableproducts})
 
 @app.route("/getversions/<productid>", methods=['POST', 'GET'])
 def get_versions_per_product(productid):
         versions_per_product = db.session.query(Versions.id, Versions.version, Products).join(Versions, Products.id==Versions.product_id).filter(Versions.product_id==productid).all()
-        print(versions_per_product)
+        #print(versions_per_product)
         availableversions = []
         for items in versions_per_product:
             versions={}
             versions['id'] = items.id
             versions['version'] = items.version
             availableversions.append(versions)
-            print(versions)
-        print(availableversions)
+            #print(versions)
+        #print(availableversions)
         return jsonify({"versions" : availableversions})
 
 @app.route("/getcomponents/<versionid>", methods=['POST', 'GET'])
 def get_components_per_version(versionid):
         components_per_version = db.session.query(Components.id, Components.compname, Products, Versions).join(Versions, Products.id==Versions.product_id).filter(Versions.id==versionid).all()
-        print(components_per_version)
+        #print(components_per_version)
         availablecomponents = []
         for items in components_per_version:
             component={}
             component['id'] = items.id
             component['compname'] = items.compname
             availablecomponents.append(component)
-            print(component)
-        print(availablecomponents)
+            #print(component)
+        #print(availablecomponents)
         return jsonify({"components" : availablecomponents})
+
+
+@app.route("/createformcollection/<strjson>", methods=['POST', 'GET'])
+def createformcollection(strjson):
+        response = json.loads(strjson)
+        connectdb = db.session.query(LaunchRequests).all()
+        print(connectdb)
+        #print(response)
+        for i in response:
+            print(i[customer])
+        return ('success')
 
 #========ALL CODE ENDS HERE============
 
