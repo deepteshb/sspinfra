@@ -55,8 +55,6 @@ class Customers(db.Model):
     cname = db.Column(db.String())
     versions = db.relationship('Versions', backref='cname')
 
-    def __repr__(self):
-        return (self.name)
 #========TABLE PRODUCT============
 class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -114,7 +112,7 @@ def index():
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
-            return render_template('launchinstances.html')
+    return render_template('login.html')
         
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
@@ -142,7 +140,7 @@ def cisghome():
     return render_template('cisgservices.html')
 
 @app.route("/reviewinstances", methods=['POST', 'GET'])
-def review():
+def reviewinstances():
     return render_template('reviewinstances.html')
 
 # This particular route is for testing purposes only 
@@ -201,13 +199,19 @@ def get_components_per_version(versionid):
 
 @app.route("/createformcollection/<strjson>", methods=['POST', 'GET'])
 def createformcollection(strjson):
-    response = json.loads(strjson)
-    for i in response:
-        insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'])
-        db.session.add(insertdatafordb)
-        db.session.commit()
-        print('successfully inserted data in db')
-    return redirect(url_for('userservicelist'))
+    if request.method == 'POST':
+        response = json.loads(strjson)
+        for i in response:
+            insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'])
+            db.session.add(insertdatafordb)
+            db.session.commit()
+            db.session.close()
+            #print('successful')
+    return ("success")
+
+
+
+    
 
 #========ALL CODE ENDS HERE============
 

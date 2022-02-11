@@ -14,8 +14,9 @@
           aria-hidden="true"></i>&nbsp;Go Back</a>
       <button id="" class="btn btn-sg add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
       <button id="" class="btn btn-sg remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button>
+
     </div>
-    
+
     <form id="collection1">
       <table class="table">
         <thead>
@@ -229,10 +230,10 @@
         var id = $(this).attr('id');
         var value = $("#" + id + " option:selected").text();
         //console.log(" id: " + id + " value: " + value);
-        strjson = strjson + "\""+ id.substring(0,id.indexOf("_"))+ "\"" + ":" + "\""+ value + "\""+ ","
+        strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"" + ","
 
       });
-      
+
 
       $(this).find('td:nth-child(n)  input').each(function () {
         var classy = $(this).attr('class');
@@ -240,7 +241,7 @@
           var id = $(this).attr('id');
           var value = $("#" + id).val();
           //console.log(" id: " + id + " value: " + value);
-          strjson = strjson + "\""+ id.substring(0,id.indexOf("_")) + "\"" + ":" + "\""+ value + "\"";
+          strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"";
         }
       });
       strjson = strjson + "},";
@@ -249,9 +250,16 @@
 
     console.log(strjson)
 
-    fetch('/createformcollection/'+ strjson)
-    .then(response => console.log("success"))
-    //.then(data => console.log(data));
+    $.ajax({
+      type: "POST",
+      url: "/createformcollection/" + strjson,
+      data: strjson,
+      dataType: "text",
+      success: function (resultData) {
+        //alert("Save Complete");
+        window.location.replace('http://127.0.0.1:5000/reviewinstances');
+      }
+    });
   }
 
   //=============================================

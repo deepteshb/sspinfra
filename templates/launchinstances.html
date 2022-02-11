@@ -1,143 +1,267 @@
-{% extends 'base.html'%}
+{% extends "base.html" %}
 {% block content %}
 <div class="container">
-    <div class="row">
-        <div class="col login-sec">
-            <h2 class="">Launch Product</h2>
-            <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able
-                to see the associated Products and Components for the customer. Then you can add additional details to
-                create your launch configuration.
-                Once you have decided on the launch configuration submit your request. Your request will be queued and
-                once the infrastructure is provisioned you will recieve an email with details.
-            </p>
-            <a class="btn btn-sg" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
-                    aria-hidden="true"></i>&nbsp;Go Back</a>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id=selectall></th>
-                    <th>Customer</th>
-                    <th>Product</th>
-                    <th>Version</th>
-                    <th>Component</th>
-                    <th># Instances</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="checkbox">
-                    </td>
-                    <td>
-                        <select id=1>
-                            <option value=1>Nugget</option>
-                            <option value=2>MGM</option>
-                            <option value=3>SG-Internal</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id=2 onchange='selectversion()'>
-                            <option value=1>CMP</option>
-                            <option value=2>BI</option>
-                            <option value=3>SDS</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id=3>
-                            <option value=1>16.0.1</option>
-                            <option value=2'>16.0.2</option>
-                            <option value=3'>13.0.1</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select id=4 value=2>
-                            <option value=1>AppServer</option>
-                            <option value=2>DBServer</option>
-                            <option value=3>Interface</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text">
-                    </td>
-                    <td>
-                        <button id="add-row" class="btn btn-sg" onclick='addrow()'><i class="fa fa-plus" aria-hidden="true"></i></button>
-                        <button id="remove-row" class="btn btn-sg" onclick='deleterow()'><i class="fa fa-trash"
-                                aria-hidden="true"></i></button>
-                    </td>
-                </tr>
+  <div class="row">
+    <div class="col login-sec">
+      <h2 class="">Launch Product</h2>
+      <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able
+        to see the associated Products and Components for the customer. Then you can add additional details to
+        create your launch configuration.
+        Once you have decided on the launch configuration submit your request. Your request will be queued and
+        once the infrastructure is provisioned you will recieve an email with details.
+      </p>
+      <a class="btn btn-sg" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
+          aria-hidden="true"></i>&nbsp;Go Back</a>
+      <button id="" class="btn btn-sg add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
+      <button id="" class="btn btn-sg remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button>
 
-            </tbody>
-        </table>
     </div>
 
-    <div>
-        <button id="submit" class="btn btn-sg" onclick='submit()'>Submit Request <i class="fa fa-arrow-right"
-                aria-hidden="true"></i></button>
-        <button id="submit" class="btn btn-danger" onclick='submit()'>Cancel <i class="fa fa-trash"
-                aria-hidden="true"></i></button>
-    </div>
-    <script type="text/javascript">
+    <form id="collection1">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id=selectall></th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Version</th>
+            <th>Component</th>
+            <th># Instances</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {{form.csrf_token()}}
+            </td>
+            <td>{{form.customer(class="customer", onchange="updateproduct(this)")}}
+            </td>
+            <td>
+              {{form.product(class="product",onchange="updateversion(this)")}}
+            </td>
+            <td>
+              {{form.version(class="version",onfocus="updatecomponent(this)")}}
+            </td>
+            <td>
+              {{form.component(class="component")}}
+            </td>
+            <td>
+              {{form.instance(class="instance")}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="submit" style="display: none;">
+    </form>
+  </div>
+  <div>
+    <button id="submitnow" class="btn btn-sg" onclick="converttojson()">Submit Request <i class="fa fa-arrow-right"
+        aria-hidden="true"></i></button>
+    <button id="cancelnow" class="btn btn-danger" onclick='cancel()'>Cancel <i class="fa fa-trash"
+        aria-hidden="true"></i></button>
+  </div>
+</div>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  //=============================================
+  $(document).ready(function () {
+    console.log("ready!");
+    reAssignIdAndName();
+  });
 
-        function addrow() {
-            $('body > div > div > div.row > table > tbody').last().append(
-                '<tr>' +
-                '<td>' +
-                '<input type="checkbox">' +
-                '</td>' +
-                '<td>' +
-                '<select disabled>' +
-                '<option>Nugget</option>' +
-                '<option>MGM</option>' +
-                '<option>SG-Internal</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<select>' +
-                '<option>CMP</option>' +
-                '<option>BI</option>' +
-                '<option>IView</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<select>' +
-                '<option>16.0.1</option>' +
-                '<option>16.0.2</option>' +
-                '<option>13.0.1</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<select>' +
-                '<option>AppServer</option>' +
-                '<option>DBServer</option>' +
-                '<option>Instance</option>' +
-                '</select>' +
-                '</td>' +
-                '<td>' +
-                '<input type="text">' +
-                '</td>' +
-                '<td>'+
-                        '<button id="add-row" class="btn btn-sg" onclick=\'addrow()\'><i class="fa fa-plus" aria-hidden="true"></i></button>'+
-                        '<button id="remove-row" class="btn btn-sg" onclick=\'deleterow()\'><i class="fa fa-trash" aria-hidden="true"></i></button>'+
-                    '</td>'+
-                '</tr>'
-            );
+  //=============================================
+  //$('.customer').change(function () {
+  function updateproduct(cust) {
+    customer = $("#" + cust.id).val();
+    product_id = cust.id.substring(cust.id.indexOf("_"));
+    console.log(customer);
+    console.log(product_id)
+    fetch('/getproducts/' + customer).then(function (response) {
+      //console.log(response)
+      response.json().then(function (data) {
+        //console.log(data)
+        $("#product" + product_id).empty()
+        for (product of data.products) {
+          //console.log(product.product)
+          //console.log(product.id)
+          $("#product" + product_id).append('<option value ="' + product.id + '">' + product.product + '</option>')
         }
+      });
+    });
+  }
 
-        function deleterow() {
-            if ($('body > div > div > div.row > table > tbody > tr').is('tr:only-child')) {
-                alert('cannot delete last row');
-            }
-            else {
-                $('body > div > div > div.row > table > tbody > tr').last().remove()
-                console.log('Row Deleted');
-        }
 
-        function submit() {
-            console.log('redirecttonewwindow')
-            window.location = "http://127.0.0.1:5000/reviewinstances"
+
+  //=============================================
+  //$('.product').focus(function () {
+  function updateversion(prod) {
+    product = $("#" + prod.id).val()
+    version_id = prod.id.substring(prod.id.indexOf("_"));
+    //console.log(product)
+    //console.log(version)
+    fetch('/getversions/' + product).then(function (response) {
+      //console.log(response)
+      response.json().then(function (data) {
+        //console.log(data)
+        $("#version" + version_id).empty()
+        for (version of data.versions) {
+          //console.log($('.version').val())
+          //console.log(version.id)
+          //console.log(version.version)
+          $("#version" + version_id).append('<option value ="' + version.id + '">' + version.version + '</option>')
+          //console.log($("#version"+version_id).val())
         }
+      });
+    });
+  }
+
+
+  //=============================================
+  //$('.version').focus(function () {
+  function updatecomponent(vers) {
+    version = $("#" + vers.id).val()
+    component_id = vers.id.substring(vers.id.indexOf("_"));
+    //console.log(version)
+    //console.log(product)
+    //console.log(version)
+    fetch('/getcomponents/' + version).then(function (response) {
+      //console.log(response)
+      response.json().then(function (data) {
+        //console.log(data)
+        $("#component" + component_id).empty()
+        for (component of data.components) {
+          //console.log($('.component').val())
+          //console.log(version.id)
+          //console.log(version.version)
+          $("#component" + component_id).append('<option value ="' + component.id + '">' + component.compname + '</option>')
+          //console.log($('.component').val())
+        }
+      });
+    });
+  }
+
+  //=============================================
+  $('.add-row').click(
+    function () {
+      //console.log($("body > div > div > div.row > table > tbody").val())
+      $("body > div > div > div.row > form > table > tbody").last().append(
+        '<tr>' +
+        '<td>' +
+        '{{form.csrf_token()}}' +
+        '</td>' +
+        '<td>{{form.customer(class="customer", onchange="updateproduct(this)")}}' +
+        '</td>' +
+        '<td>' +
+        '{{form.product(class="product",onchange="updateversion(this)")}}' +
+        '</td>' +
+        '<td>' +
+        '{{form.version(class="version",onfocus="updatecomponent(this)")}}' +
+        '</td>' +
+        '<td>' +
+        '{{form.component(class="component")}}' +
+        '</td>' +
+        '<td>' +
+        '{{form.instance(class="instance")}}' +
+        '</td>' +
+        '</tr>'
+      );
+      reAssignIdAndName();
     }
-    </script>
-    {% endblock %}
+  )
+
+
+  //=============================================
+  $('.remove-row').click(
+    function () {
+      if ($('body > div > div > div.row > form > table > tbody > tr').is('tr:only-child')) {
+        alert('cannot delete last row');
+      }
+      else {
+        $('body > div > div > div.row > form > table > tbody > tr').last().remove()
+        console.log('Row Deleted');
+
+      }
+    }
+  )
+
+
+  //=============================================
+  reAssignIdAndName = function () {
+    $('table tr').each(function (index) {
+      $(this).find('td:nth-child(n) select').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
+        //assigne new id and name
+        $(this).attr('id', classy + "_" + id);
+        $(this).attr('name', classy + "_" + id);
+      });
+      $(this).find('td:nth-child(n)  input').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
+        //assigne new id and name
+        $(this).attr('id', classy + "_" + id);
+        $(this).attr('name', classy + "_" + id);
+      });
+    });
+  };
+  //=============================================
+  /* $("#submitnow").click(function () {
+    $("#collection1").submit()
+  }); */
+
+  //=============================================
+
+  function converttojson() {
+    var strjson = "[";
+
+    $('form table tbody tr').each(function (index) {
+      strjson = strjson + "{";
+      $(this).find('td:nth-child(n) select').each(function () {
+        var id = $(this).attr('id');
+        var value = $("#" + id + " option:selected").text();
+        //console.log(" id: " + id + " value: " + value);
+        strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"" + ","
+
+      });
+
+
+      $(this).find('td:nth-child(n)  input').each(function () {
+        var classy = $(this).attr('class');
+        if (classy == "instance") {
+          var id = $(this).attr('id');
+          var value = $("#" + id).val();
+          //console.log(" id: " + id + " value: " + value);
+          strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"";
+        }
+      });
+      strjson = strjson + "},";
+    });
+    strjson = strjson.substring(0, strjson.lastIndexOf(",")) + "]";
+
+    console.log(strjson)
+
+    $.ajax({
+      type: "POST",
+      url: "/createformcollection/" + strjson,
+      data: strjson,
+      dataType: "text",
+      success: function (resultData) {
+        //alert("Save Complete");
+        window.location.replace('http://127.0.0.1:5000/reviewinstances');
+      }
+    });
+  }
+
+  //=============================================
+</script>
+{% endblock %}
