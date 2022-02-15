@@ -4,6 +4,7 @@
   <div class="row">
     <div class="col login-sec">
       <h2 class="">Launch Product</h2>
+        <label  id="user" style="display: none;">{{user}}</label>
       <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able
         to see the associated Products and Components for the customer. Then you can add additional details to
         create your launch configuration.
@@ -14,15 +15,15 @@
           aria-hidden="true"></i>&nbsp;Go Back</a>
       <button id="" class="btn btn-sg add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
       <button id="" class="btn btn-sg remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button>
-
     </div>
-
+    <div class="row login-sec">
+      <h5>Raise Request for Customer</h5>{{form.customer(class='customer', id='customer')}}
+    </div>
     <form id="collection1">
       <table class="table">
         <thead>
           <tr>
             <th><input type="checkbox" id=selectall></th>
-            <th>Customer</th>
             <th>Product</th>
             <th>Version</th>
             <th>Component</th>
@@ -32,21 +33,19 @@
         <tbody>
           <tr>
             <td>
-              {{form.csrf_token()}}
-            </td>
-            <td>{{form.customer(class="customer", onchange="updateproduct(this)")}}
+              {{form.csrf_token}}
             </td>
             <td>
-              {{form.product(class="product",onchange="updateversion(this)")}}
+              {{form.product(class="product", id='product_1', onchange="updateversion(this)")}}
             </td>
             <td>
-              {{form.version(class="version",onfocus="updatecomponent(this)")}}
+              {{form.version(class="version", id='version_1',onchange="updatecomponent(this)")}}
             </td>
             <td>
-              {{form.component(class="component")}}
+              {{form.component(class="component",  id='component_1',)}}
             </td>
             <td>
-              {{form.instance(class="instance")}}
+              {{form.instance(class="instance" , id='instance_1',)}}
             </td>
           </tr>
         </tbody>
@@ -66,44 +65,74 @@
   //=============================================
   $(document).ready(function () {
     console.log("ready!");
-    reAssignIdAndName();
+    //reAssignIdAndName();
   });
 
+
   //=============================================
-  //$('.customer').change(function () {
-  function updateproduct(cust) {
-    customer = $("#" + cust.id).val();
-    product_id = cust.id.substring(cust.id.indexOf("_"));
-    console.log(customer);
-    console.log(product_id)
-    fetch('/getproducts/' + customer).then(function (response) {
-      //console.log(response)
-      response.json().then(function (data) {
-        //console.log(data)
-        $("#product" + product_id).empty()
-        for (product of data.products) {
-          //console.log(product.product)
-          //console.log(product.id)
-          $("#product" + product_id).append('<option value ="' + product.id + '">' + product.product + '</option>')
-        }
+
+  reAssignIdAndName = function () {
+      $('table tr').each(function (index) {
+      $(this).find('td:nth-child(n) select').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        //id = id.substring(0, underScoreIndex)+"_" + (parseInt(index));
+        id = (parseInt(index));
+        //assigne new id and name
+        //$(this).attr('id').remove();
+        $(this).attr('id', classy +"_" + id);
+        $(this).attr('name',classy +"_" + id);
+      });
+      $(this).find('td:nth-child(n)  input').each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        //id = id.substring(0, underScoreIndex) + (parseInt(index));
+        id = (parseInt(index));
+        //assigne new id and name
+        $(this).attr('id', classy + "_" + id);
+        $(this).attr('name', classy + "_" + id);
       });
     });
-  }
+  };
+//=============================================
 
-
-
+  /* function updateproduct(cust) {
+    $('#customer').each(function (index) {
+      $(this).each(function () {
+        //id of input element
+        var id = $(this).attr('id');
+        //alert(id);  
+        var classy = $(this).attr('class');
+        //get index of underscrore
+        var underScoreIndex = id.indexOf('_');
+        //take id till underscore and append your index+1 value
+        //id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
+        //assigne new id and name
+        $(this).attr('id', "customer_" + id);
+        $(this).attr('name', "customer_" + id);
+      });
+    });
+  } */
   //=============================================
-  //$('.product').focus(function () {
   function updateversion(prod) {
     product = $("#" + prod.id).val()
     version_id = prod.id.substring(prod.id.indexOf("_"));
-    //console.log(product)
+    //alert(product)
     //console.log(version)
     fetch('/getversions/' + product).then(function (response) {
       //console.log(response)
       response.json().then(function (data) {
         //console.log(data)
         $("#version" + version_id).empty()
+        $("#version" + version_id).append('<option value ="0">--select--</option>')
         for (version of data.versions) {
           //console.log($('.version').val())
           //console.log(version.id)
@@ -114,12 +143,10 @@
       });
     });
   }
-
-
-  //=============================================
-  //$('.version').focus(function () {
-  function updatecomponent(vers) {
+//=============================================
+function updatecomponent(vers) {
     version = $("#" + vers.id).val()
+    console.log('version value is: '+ version)
     component_id = vers.id.substring(vers.id.indexOf("_"));
     //console.log(version)
     //console.log(product)
@@ -129,6 +156,7 @@
       response.json().then(function (data) {
         //console.log(data)
         $("#component" + component_id).empty()
+        //$("#component" + component_id).append('<option value ="0">--select--</option>')
         for (component of data.components) {
           //console.log($('.component').val())
           //console.log(version.id)
@@ -139,8 +167,8 @@
       });
     });
   }
-
   //=============================================
+
   $('.add-row').click(
     function () {
       //console.log($("body > div > div > div.row > table > tbody").val())
@@ -148,14 +176,11 @@
         '<tr>' +
         '<td>' +
         '{{form.csrf_token()}}' +
-        '</td>' +
-        '<td>{{form.customer(class="customer", onchange="updateproduct(this)")}}' +
-        '</td>' +
         '<td>' +
         '{{form.product(class="product",onchange="updateversion(this)")}}' +
         '</td>' +
         '<td>' +
-        '{{form.version(class="version",onfocus="updatecomponent(this)")}}' +
+        '{{form.version(class="version",onchange="updatecomponent(this)")}}' +
         '</td>' +
         '<td>' +
         '{{form.component(class="component")}}' +
@@ -168,7 +193,6 @@
       reAssignIdAndName();
     }
   )
-
 
   //=============================================
   $('.remove-row').click(
@@ -183,57 +207,23 @@
       }
     }
   )
-
-
-  //=============================================
-  reAssignIdAndName = function () {
-    $('table tr').each(function (index) {
-      $(this).find('td:nth-child(n) select').each(function () {
-        //id of input element
-        var id = $(this).attr('id');
-        var classy = $(this).attr('class');
-        //get index of underscrore
-        var underScoreIndex = id.indexOf('_');
-        //take id till underscore and append your index+1 value
-        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
-        //assigne new id and name
-        $(this).attr('id', classy + "_" + id);
-        $(this).attr('name', classy + "_" + id);
-      });
-      $(this).find('td:nth-child(n)  input').each(function () {
-        //id of input element
-        var id = $(this).attr('id');
-        var classy = $(this).attr('class');
-        //get index of underscrore
-        var underScoreIndex = id.indexOf('_');
-        //take id till underscore and append your index+1 value
-        id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
-        //assigne new id and name
-        $(this).attr('id', classy + "_" + id);
-        $(this).attr('name', classy + "_" + id);
-      });
-    });
-  };
-  //=============================================
-  /* $("#submitnow").click(function () {
-    $("#collection1").submit()
-  }); */
-
-  //=============================================
-
-  function converttojson() {
+   //=============================================
+   function converttojson() {
+    var cust = $('#customer').val()
+    var user = $('#user').text()
+    console.log(user)
     var strjson = "[";
 
     $('form table tbody tr').each(function (index) {
       strjson = strjson + "{";
+      strjson = strjson + "\"" + "customer" + "\"" + ":" + "\"" + cust + "\"" + ","
+      strjson = strjson + "\"" + "createdby" + "\"" + ":" + "\"" + user + "\"" + ","
       $(this).find('td:nth-child(n) select').each(function () {
         var id = $(this).attr('id');
         var value = $("#" + id + " option:selected").text();
         //console.log(" id: " + id + " value: " + value);
         strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"" + ","
-
       });
-
 
       $(this).find('td:nth-child(n)  input').each(function () {
         var classy = $(this).attr('class');
@@ -250,7 +240,7 @@
 
     console.log(strjson)
 
-    $.ajax({
+     $.ajax({
       type: "POST",
       url: "/createformcollection/" + strjson,
       data: strjson,
@@ -261,7 +251,6 @@
       }
     });
   }
-
   //=============================================
 </script>
 {% endblock %}

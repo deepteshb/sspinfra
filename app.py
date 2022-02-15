@@ -146,14 +146,12 @@ def userservicelist():
 def launchinstances():
     if 'username' in session:
         user = session['username']
-        
-        
         form = LaunchInstanceForm()
-        form.customer.choices = [(customers.id,customers.cname)for customers in Customers.query.all()]
-        form.product.choices =[(products.id, products.pname)for products in Products.query] #.filter_by(id='1').all()
-        form.version.choices = [(versions.id, versions.version)for versions in Versions.query]
-        form.component.choices = [(components.id, components.compname)for components in Components.query]
-        return render_template('launchinstances.html', form=form, user=user)
+        form.customer.choices = [(customers.id,customers.cname)for customers in Customers.query.all()]#[(customers.id,customers.cname)for customers in Customers.query.all()]
+        form.product.choices = [(products.id, products.pname)for products in Products.query.all()] #.filter_by(id='1').all()
+        form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
+        form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
+        return render_template('testpage.html', form=form, user=user )
     return render_template('loginerror.html')
 
 
