@@ -24,67 +24,32 @@
           </tr>
         </thead>
         <tbody>
+          {% for rows in tabledata %}
           <tr>
             <td>
-              <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
+              <text class="form-control" name="" id="" rows="3"><strong>{{rows['requestid']}}</strong></textarea>
             </td>
             <td>
-              <text class="form-control" name="" id="" rows="3"><strong><i>CMP</i></strong></textarea>
+              <text class="form-control" name="" id="" rows="3">{{rows['customer']}}</textarea>
             </td>
             <td>
-              <text class="form-control" name="" id="" rows="3">16.0.1</textarea>
+              <text class="form-control" name="" id="" rows="3"><strong><i>{{rows['product']}}</i></strong></textarea>
             </td>
             <td>
-              <text class="form-control" name="" id="" rows="3">AppServer</textarea>
+              <text class="form-control" name="" id="" rows="3">{{rows['version']}}</textarea>
             </td>
             <td>
-              <text class="form-control" name="" id="" rows="3">2</textarea>
+              <text class="form-control" name="" id="" rows="3">{{rows['component']}}</textarea>
             </td>
             <td>
-              <text class="form-control" name="" id="" rows="3">1</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">30GB</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">4GB</textarea>
+              <text class="form-control" name="" id="" rows="3">{{rows['instances']}}</textarea>
             </td>
             <td>
               <button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
               <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
           </tr>
-          <tr>
-            <td>
-              <text class="form-control" name="" id="" rows="3"><strong>Nugget</strong></textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3"><strong><i>BI</i></strong></textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">15.2.1</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">AppServer</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">1</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">2</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">60GB</textarea>
-            </td>
-            <td>
-              <text class="form-control" name="" id="" rows="3">4GB</textarea>
-            </td>
-            <td>
-              <button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button>
-              <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-            </td>
-          </tr>
-
+          {% endfor %}
         </tbody>
       </table>
     </div>

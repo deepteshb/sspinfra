@@ -117,7 +117,7 @@ class LaunchInstanceForm(FlaskForm):
 def index():
     if 'username' in session:
         user = session['username']
-        print(user)
+        #print(user)
         return render_template('userservicelist.html',user=user)
     return render_template('login.html')
 
@@ -139,7 +139,22 @@ def logout():
 def userservicelist():
     if 'username' in session:
         user = session['username']
-        return render_template('userservicelist.html',user=user)
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
+        print('table is :')
+        print(table)
+        tabledata = []
+        for items in table:
+            data={}
+            data['requestid'] = items.request_id
+            data["customer"] = items.cname
+            data["product"] = items.product
+            data["version"] = items.version
+            data["component"] = items.component
+            data["instances"] = items.instances
+            tabledata.append(data)
+            print(data)
+        print(tabledata)
+        return render_template('userservicelist.html',user=user, tabledata=tabledata)
     return render_template('loginerror.html')
 
 @app.route("/launchinstances", methods=['POST', 'GET'])
@@ -194,7 +209,7 @@ def testpage():
 @app.route("/getproducts", methods=['POST', 'GET'])
 def get_products_per_customer():
         products_per_customer = db.session.query(Products.id, Products.pname).distinct(Products.id).all()#
-        print(products_per_customer)
+        #print(products_per_customer)
         availableproducts = []
         for items in products_per_customer:
             products={}
@@ -202,13 +217,13 @@ def get_products_per_customer():
             products["product"] = items.pname
             availableproducts.append(products)
             print(products)
-        print(availableproducts)
+        #print(availableproducts)
         return jsonify({"products" : availableproducts})
 
 @app.route("/getversions/<productid>", methods=['POST', 'GET'])
 def get_versions_per_product(productid):
         versions_per_product = db.session.query(Versions.id, Versions.version).filter(Versions.product_id==productid).all()
-        print(versions_per_product)
+        #print(versions_per_product)
         availableversions = []
         for items in versions_per_product:
             versions={}
@@ -222,7 +237,7 @@ def get_versions_per_product(productid):
 @app.route("/getcomponents/<versionid>", methods=['POST', 'GET'])
 def get_components_per_version(versionid):
         components_per_version = db.session.query(Components.id, Components.compname,Versions).join(Versions).filter(Versions.id==versionid).filter().all()
-        print(components_per_version)
+        #print(components_per_version)
         availablecomponents = []
         for items in components_per_version:
             component={}
@@ -238,8 +253,8 @@ def get_components_per_version(versionid):
 def createformcollection(strjson):
     if request.method == 'POST':
         response = json.loads(strjson) 
-        print("response recd is")
-        print(response)
+        #print("response recd is")
+        #print(response)
         for items in response:
             createdby = items['createdby']
             dqqueryforrequestid = requestsmapping(id=None,customer=items['customer'],createdby=items['createdby'],createdate=None, status=None)
