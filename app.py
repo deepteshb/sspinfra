@@ -166,7 +166,7 @@ def launchinstances():
         form.product.choices = [(products.id, products.pname)for products in Products.query.all()] #.filter_by(id='1').all()
         form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
         form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
-        return render_template('testpage.html', form=form, user=user )
+        return render_template('launchinstances.html', form=form, user=user )
     return render_template('loginerror.html')
 
 
@@ -188,23 +188,47 @@ def cisghome():
 @app.route("/reviewinstances", methods=['POST', 'GET'])
 def reviewinstances():
     if 'username' in session:
-            user = session['username']
-            return render_template('reviewinstances.html',user=user)
+        user = session['username']
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
+        print('table is :')
+        print(table)
+        tabledata = []
+        for items in table:
+            data={}
+            data['requestid'] = items.request_id
+            data["customer"] = items.cname
+            data["product"] = items.product
+            data["version"] = items.version
+            data["component"] = items.component
+            data["instances"] = items.instances
+            tabledata.append(data)
+            print(data)
+        print(tabledata)
+        return render_template('reviewinstances.html',user=user, tabledata=tabledata)
     return render_template('loginerror.html')                                                   
 
 # This particular route is for testing purposes only 
 
 @app.route("/testpage/", methods=['POST', 'GET'])
 def testpage():
-    if 'username' in session:
-        user = session['username']
-        form = LaunchInstanceForm()
-        form.customer.choices = [(customers.id,customers.cname)for customers in Customers.query.all()]#[(customers.id,customers.cname)for customers in Customers.query.all()]
-        form.product.choices = [(products.id, products.pname)for products in Products.query.all()] #.filter_by(id='1').all()
-        form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
-        form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
-        return render_template('testpage.html', form=form, user=user )
-    return render_template('loginerror.html')
+    user = 'deep'
+    table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
+    print('table is :')
+    print(table)
+    tabledata = []
+    for items in table:
+            data={}
+            data['requestid'] = items.request_id
+            data["customer"] = items.cname
+            data["product"] = items.product
+            data["version"] = items.version
+            data["component"] = items.component
+            data["instances"] = items.instances
+            tabledata.append(data)
+            print(data)
+            print(tabledata)
+            return render_template('testpage.html',user=user, tabledata=tabledata)
+    return render_template('loginerror.html')    
 
 @app.route("/getproducts", methods=['POST', 'GET'])
 def get_products_per_customer():
@@ -268,6 +292,11 @@ def createformcollection(strjson):
         db.session.close()
         #print('successful')
     return ("success")
+
+@app.route("/confirmlaunch", methods=['POST', 'GET'])
+def confirmlaunch():
+
+        return '<h1>Success</h1>'
 
 #========ALL CODE ENDS HERE============
 

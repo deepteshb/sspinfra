@@ -1,256 +1,54 @@
-{% extends "base.html" %}
+{% extends 'base.html'%}
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col login-sec">
-      <h2 class="">Launch Product</h2>
-        <label  id="user" style="display: none;">{{user}}</label>
-      <p class="card p-3" style="background-color: rgb(243, 243, 243);">Select your customer and you will be able
-        to see the associated Products and Components for the customer. Then you can add additional details to
-        create your launch configuration.
-        Once you have decided on the launch configuration submit your request. Your request will be queued and
-        once the infrastructure is provisioned you will recieve an email with details.
-      </p>
-      <a class="btn btn-sg" href="{{url_for('userservicelist')}}"><i class="fa fa-step-backward"
-          aria-hidden="true"></i>&nbsp;Go Back</a>
-      <button id="" class="btn btn-sg add-row"><i class="fa fa-plus" aria-hidden="true"></i></button>
-      <button id="" class="btn btn-sg remove-row"><i class="fa fa-trash" aria-hidden="true"></i></button>
+    <div class="row">
+        <div class="col login-sec">
+            <h2 class="">Review Your Request</h2>
+            <a class="btn btn-sg" href="{{url_for('launchinstances')}}"><i class="fa fa-step-backward"
+                    aria-hidden="true"></i>&nbsp;Go Back</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>RequestID</th>
+                    <th>CUSTOMER</th>
+                    <th>PRODUCT</th>
+                    <th>VERSION</th>
+                    <th>COMPONENT</th>
+                    <th># INSTANCES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rows in tabledata %}
+                <tr>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3"><strong>{{rows['requestid']}}</strong></textarea>
+                  </td>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3">{{rows['customer']}}</textarea>
+                  </td>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3"><strong><i>{{rows['product']}}</i></strong></textarea>
+                  </td>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3">{{rows['version']}}</textarea>
+                  </td>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3">{{rows['component']}}</textarea>
+                  </td>
+                  <td>
+                    <text class="form-control" name="" id="" rows="3">{{rows['instances']}}</textarea>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+        </table>
     </div>
-    <div class="row login-sec">
-      <h5>Raise Request for Customer</h5>{{form.customer(class='customer', id='customer')}}
+
+    <div>
+        <a class="btn btn-sg" href="{{url_for('confirmlaunch')}}">Confirm Launch <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
     </div>
-    <form id="collection1">
-      <table class="table">
-        <thead>
-          <tr>
-            <th><input type="checkbox" id=selectall></th>
-            <th>Product</th>
-            <th>Version</th>
-            <th>Component</th>
-            <th># Instances</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              {{form.csrf_token}}
-            </td>
-            <td>
-              {{form.product(class="product", id='product_1', onchange="updateversion(this)")}}
-            </td>
-            <td>
-              {{form.version(class="version", id='version_1',onchange="updatecomponent(this)")}}
-            </td>
-            <td>
-              {{form.component(class="component",  id='component_1',)}}
-            </td>
-            <td>
-              {{form.instance(class="instance" , id='instance_1',)}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <input type="submit" style="display: none;">
-    </form>
-  </div>
-  <div>
-    <button id="submitnow" class="btn btn-sg" onclick="converttojson()">Submit Request <i class="fa fa-arrow-right"
-        aria-hidden="true"></i></button>
-    <button id="cancelnow" class="btn btn-danger" onclick='cancel()'>Cancel <i class="fa fa-trash"
-        aria-hidden="true"></i></button>
-  </div>
-</div>
-<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  //=============================================
-  $(document).ready(function () {
-    console.log("ready!");
-    //reAssignIdAndName();
-  });
-
-
-  //=============================================
-
-  reAssignIdAndName = function () {
-      $('table tr').each(function (index) {
-      $(this).find('td:nth-child(n) select').each(function () {
-        //id of input element
-        var id = $(this).attr('id');
-        var classy = $(this).attr('class');
-        //get index of underscrore
-        var underScoreIndex = id.indexOf('_');
-        //take id till underscore and append your index+1 value
-        //id = id.substring(0, underScoreIndex)+"_" + (parseInt(index));
-        id = (parseInt(index));
-        //assigne new id and name
-        //$(this).attr('id').remove();
-        $(this).attr('id', classy +"_" + id);
-        $(this).attr('name',classy +"_" + id);
-      });
-      $(this).find('td:nth-child(n)  input').each(function () {
-        //id of input element
-        var id = $(this).attr('id');
-        var classy = $(this).attr('class');
-        //get index of underscrore
-        var underScoreIndex = id.indexOf('_');
-        //take id till underscore and append your index+1 value
-        //id = id.substring(0, underScoreIndex) + (parseInt(index));
-        id = (parseInt(index));
-        //assigne new id and name
-        $(this).attr('id', classy + "_" + id);
-        $(this).attr('name', classy + "_" + id);
-      });
-    });
-  };
-//=============================================
-
-  /* function updateproduct(cust) {
-    $('#customer').each(function (index) {
-      $(this).each(function () {
-        //id of input element
-        var id = $(this).attr('id');
-        //alert(id);  
-        var classy = $(this).attr('class');
-        //get index of underscrore
-        var underScoreIndex = id.indexOf('_');
-        //take id till underscore and append your index+1 value
-        //id = id.substring(0, underScoreIndex + 1) + (parseInt(index) + 1);
-        //assigne new id and name
-        $(this).attr('id', "customer_" + id);
-        $(this).attr('name', "customer_" + id);
-      });
-    });
-  } */
-  //=============================================
-  function updateversion(prod) {
-    product = $("#" + prod.id).val()
-    version_id = prod.id.substring(prod.id.indexOf("_"));
-    //alert(product)
-    //console.log(version)
-    fetch('/getversions/' + product).then(function (response) {
-      //console.log(response)
-      response.json().then(function (data) {
-        //console.log(data)
-        $("#version" + version_id).empty()
-        $("#version" + version_id).append('<option value ="0">--select--</option>')
-        for (version of data.versions) {
-          //console.log($('.version').val())
-          //console.log(version.id)
-          //console.log(version.version)
-          $("#version" + version_id).append('<option value ="' + version.id + '">' + version.version + '</option>')
-          //console.log($("#version"+version_id).val())
-        }
-      });
-    });
-  }
-//=============================================
-function updatecomponent(vers) {
-    version = $("#" + vers.id).val()
-    console.log('version value is: '+ version)
-    component_id = vers.id.substring(vers.id.indexOf("_"));
-    //console.log(version)
-    //console.log(product)
-    //console.log(version)
-    fetch('/getcomponents/' + version).then(function (response) {
-      //console.log(response)
-      response.json().then(function (data) {
-        //console.log(data)
-        $("#component" + component_id).empty()
-        //$("#component" + component_id).append('<option value ="0">--select--</option>')
-        for (component of data.components) {
-          //console.log($('.component').val())
-          //console.log(version.id)
-          //console.log(version.version)
-          $("#component" + component_id).append('<option value ="' + component.id + '">' + component.compname + '</option>')
-          //console.log($('.component').val())
-        }
-      });
-    });
-  }
-  //=============================================
-
-  $('.add-row').click(
-    function () {
-      //console.log($("body > div > div > div.row > table > tbody").val())
-      $("body > div > div > div.row > form > table > tbody").last().append(
-        '<tr>' +
-        '<td>' +
-        '{{form.csrf_token()}}' +
-        '<td>' +
-        '{{form.product(class="product",onchange="updateversion(this)")}}' +
-        '</td>' +
-        '<td>' +
-        '{{form.version(class="version",onchange="updatecomponent(this)")}}' +
-        '</td>' +
-        '<td>' +
-        '{{form.component(class="component")}}' +
-        '</td>' +
-        '<td>' +
-        '{{form.instance(class="instance")}}' +
-        '</td>' +
-        '</tr>'
-      );
-      reAssignIdAndName();
-    }
-  )
-
-  //=============================================
-  $('.remove-row').click(
-    function () {
-      if ($('body > div > div > div.row > form > table > tbody > tr').is('tr:only-child')) {
-        alert('cannot delete last row');
-      }
-      else {
-        $('body > div > div > div.row > form > table > tbody > tr').last().remove()
-        console.log('Row Deleted');
-
-      }
-    }
-  )
-   //=============================================
-   function converttojson() {
-    var cust = $('#customer').val()
-    var user = $('#user').text()
-    console.log(user)
-    var strjson = "[";
-
-    $('form table tbody tr').each(function (index) {
-      strjson = strjson + "{";
-      strjson = strjson + "\"" + "customer" + "\"" + ":" + "\"" + cust + "\"" + ","
-      strjson = strjson + "\"" + "createdby" + "\"" + ":" + "\"" + user + "\"" + ","
-      $(this).find('td:nth-child(n) select').each(function () {
-        var id = $(this).attr('id');
-        var value = $("#" + id + " option:selected").text();
-        //console.log(" id: " + id + " value: " + value);
-        strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"" + ","
-      });
-
-      $(this).find('td:nth-child(n)  input').each(function () {
-        var classy = $(this).attr('class');
-        if (classy == "instance") {
-          var id = $(this).attr('id');
-          var value = $("#" + id).val();
-          //console.log(" id: " + id + " value: " + value);
-          strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"";
-        }
-      });
-      strjson = strjson + "},";
-    });
-    strjson = strjson.substring(0, strjson.lastIndexOf(",")) + "]";
-
-    console.log(strjson)
-
-     $.ajax({
-      type: "POST",
-      url: "/createformcollection/" + strjson,
-      data: strjson,
-      dataType: "text",
-      success: function (resultData) {
-        //alert("Save Complete");
-        window.location.replace('http://127.0.0.1:5000/reviewinstances');
-      }
-    });
-  }
-  //=============================================
-</script>
-{% endblock %}
+    {% endblock %}
+    
+ 
+   
