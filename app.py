@@ -6,6 +6,8 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_cors import CORS
+from jenkinsapi.jenkins import Jenkins
+import jenkins
 import json
 import sqlite3
 import os
@@ -137,6 +139,7 @@ def logout():
 
 @app.route("/userservicelist", methods=['POST', 'GET'])
 def userservicelist():
+    print('Code Block1 Started')
     if 'username' in session:
         user = session['username']
         table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
@@ -295,8 +298,30 @@ def createformcollection(strjson):
 
 @app.route("/confirmlaunch", methods=['POST', 'GET'])
 def confirmlaunch():
+            server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
+            #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
+            #buildnow = server.build_job('terraformexec',parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
+            #print(buildnow1)
+            #print(buildnow)
+            job="terraformexec"
+            token="11a386d30a8cf98d061ee360682eb5fb24"
+            
+            #requestdatafromdb = db.session.query(Customers.cname, launchrequests.id, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.request_id==requestid).all()
+            #print(requestdatafromdb)
+            #buildjoburl = server.build_job_url('terraformexec', parameters=None, {'token': token})
+            
+            #fetch parameters from DB
+            
 
-        return '<h1>Success</h1>'
+
+            buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'12', 'product':'nginx','version':'nginx:latest','component':'SDA','instances':'1'}, token=token)
+            build_info = server.get_queue_item(buildnewjob, depth=0)
+            
+            #print(listofjobs)
+            #print(buildjoburl)
+            print(buildnewjob)
+            print(build_info)
+            return ("This is server details:")
 
 #========ALL CODE ENDS HERE============
 
