@@ -298,13 +298,13 @@ def createformcollection(strjson):
 
 @app.route("/confirmlaunch", methods=['POST', 'GET'])
 def confirmlaunch():
-            server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
+            #server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
             #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
             #buildnow = server.build_job('terraformexec',parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
             #print(buildnow1)
             #print(buildnow)
-            job="terraformexec"
-            token="11a386d30a8cf98d061ee360682eb5fb24"
+            #job="terraformexec"
+            #token="11a386d30a8cf98d061ee360682eb5fb24"
             
             #requestdatafromdb = db.session.query(Customers.cname, launchrequests.id, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.request_id==requestid).all()
             #print(requestdatafromdb)
@@ -314,14 +314,14 @@ def confirmlaunch():
             
 
 
-            buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'12', 'product':'nginx','version':'nginx:latest','component':'SDA','instances':'1'}, token=token)
-            build_info = server.get_queue_item(buildnewjob, depth=0)
+            #buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'12', 'product':'nginx','version':'nginx:latest','component':'SDA','instances':'1'}, token=token)
+            #build_info = server.get_queue_item(buildnewjob, depth=0)
             
             #print(listofjobs)
             #print(buildjoburl)
-            print(buildnewjob)
-            print(build_info)
-            return ("This is server details:")
+            #print(buildnewjob)
+            #print(build_info)
+            return redirect(url_for('userservicelist'))
 
 #========ALL CODE ENDS HERE============
 
