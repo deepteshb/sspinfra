@@ -56,7 +56,7 @@
   <div>
     <button id="submitnow" class="btn btn-sg" onclick="converttojson()">Submit Request <i class="fa fa-arrow-right"
         aria-hidden="true"></i></button>
-    <button id="cancelnow" class="btn btn-danger" onclick='cancel()'>Cancel <i class="fa fa-trash"
+    <button id="cancelnow" class="btn btn-danger" onclick="cancel()">Cancel <i class="fa fa-trash"
         aria-hidden="true"></i></button>
   </div>
 </div>
@@ -250,6 +250,13 @@ function updatecomponent(vers) {
         window.location.replace('http://127.0.0.1:5000/reviewinstances');
       }
     });
+  }
+
+  function cancel() {
+    window.location.replace('http://127.0.0.1:5000/userservicelist');
+    //console.log(product)
+    //console.log(version)
+    
   }
   //=============================================
 </script>

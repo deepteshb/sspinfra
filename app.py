@@ -1,7 +1,8 @@
 #============================================================================
 #ALL IMPORTS
-from flask import Flask,render_template,url_for,jsonify,session,g,request,session,redirect
+from flask import Flask,render_template, request_tearing_down,url_for,jsonify,session,g,request,session,redirect
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -24,7 +25,9 @@ app = Flask(__name__)
 #GLOBAL APP CONFIGURATION
 
 app.config['SECRET_KEY'] = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/myProjects/sspinfra/sspinfra.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/myProjects/sspinfra/sspinfra.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:abc123@localhost:5432/sspinfra_dev"
+
 
 #============================================================================
 #GLOBALDEFINITIONS
@@ -35,18 +38,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/myProjects/sspinfra/sspinf
 #============================================================================
 #DBMODELS AND SCHEMA DEFINITIONS
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 
 
 #========TABLE GROUPS============
+
 class Groups(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    group = db.Column(db.String)
-    users = db.relationship('Users', backref='groups')
+    group = db.Column(db.String(50))
+    users = db.relationship('Users', backref='groups') 
 
 #========TABLE USERS============
 class Users(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
-    username = db.Column(db.String)
+    username = db.Column(db.String(50))
     authenticated = db.Column(db.Integer)
     status = db.Column(db.Integer)
     group_id = db.Column(db.Integer, db.ForeignKey('groups.id')) 
@@ -54,44 +60,46 @@ class Users(db.Model):
 #========TABLE CUSTOMER============
 class Customers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    cname = db.Column(db.String())
+    cname = db.Column(db.String(50))
 
 #========TABLE PRODUCT============
 class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    pname = db.Column(db.String())
+    pname = db.Column(db.String(50))
     versions = db.relationship('Versions', backref='products')
 
 #========TABLE COMPONENT============
 class Components(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    compname = db.Column(db.String())
+    compname = db.Column(db.String(50))
     versions = db.relationship('Versions', backref='components')
 
 #========TABLE VERSION============
 class Versions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    version = db.Column(db.String)
+    version = db.Column(db.String(50))
     product_id = db.Column(db.Integer, db.ForeignKey('products.id')) 
     comp_id = db.Column(db.Integer, db.ForeignKey('components.id')) 
 
 #============================================================================
 class launchrequests(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    customer = db.Column(db.String)
-    product = db.Column(db.String)
-    version = db.Column(db.String)
-    component = db.Column(db.String)
+    #customer = db.Column(db.String(50))
+    customer = db.Column(db.Integer)
+    product = db.Column(db.String(50))
+    version = db.Column(db.String(50))
+    component = db.Column(db.String(50))
     instances = db.Column(db.Integer)
-    createdby = db.Column(db.String)
+    createdby = db.Column(db.String(50))
     request_id=db.Column(db.Integer, db.ForeignKey('requestsmapping.id'))
+    status = db.Column(db.String(50))
 #============================================================================
 class requestsmapping(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     customer = db.Column(db.Integer)
-    createdby=db.Column(db.String)
+    createdby=db.Column(db.String(50))
     createdate=db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    status=db.Column(db.String)
+    status=db.Column(db.String(50))
 #============================================================================
 
 #DB-QUERIES
@@ -119,8 +127,8 @@ class LaunchInstanceForm(FlaskForm):
 def index():
     if 'username' in session:
         user = session['username']
-        #print(user)
-        return render_template('userservicelist.html',user=user)
+        print(user)
+        return redirect(url_for('userservicelist'))
     return render_template('login.html')
 
 
@@ -128,6 +136,7 @@ def index():
 def login():
     if request.method == 'POST':
         session['username'] = request.form['userid']
+        user = session['username']
         return redirect(url_for('index'))
     return render_template('loginerror.html')
 
@@ -139,10 +148,9 @@ def logout():
 
 @app.route("/userservicelist", methods=['POST', 'GET'])
 def userservicelist():
-    print('Code Block1 Started')
     if 'username' in session:
         user = session['username']
-        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).all()
         print('table is :')
         print(table)
         tabledata = []
@@ -154,10 +162,11 @@ def userservicelist():
             data["version"] = items.version
             data["component"] = items.component
             data["instances"] = items.instances
+            data["status"] = items.status
             tabledata.append(data)
             print(data)
         print(tabledata)
-        return render_template('userservicelist.html',user=user, tabledata=tabledata)
+        return render_template('userservicelist.html',user=user, tabledata=tabledata)        
     return render_template('loginerror.html')
 
 @app.route("/launchinstances", methods=['POST', 'GET'])
@@ -171,7 +180,6 @@ def launchinstances():
         form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
         return render_template('launchinstances.html', form=form, user=user )
     return render_template('loginerror.html')
-
 
 
 @app.route("/addtemplate", methods=['POST', 'GET'])
@@ -192,7 +200,7 @@ def cisghome():
 def reviewinstances():
     if 'username' in session:
         user = session['username']
-        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).all()
         print('table is :')
         print(table)
         tabledata = []
@@ -210,28 +218,7 @@ def reviewinstances():
         return render_template('reviewinstances.html',user=user, tabledata=tabledata)
     return render_template('loginerror.html')                                                   
 
-# This particular route is for testing purposes only 
-
-@app.route("/testpage/", methods=['POST', 'GET'])
-def testpage():
-    user = 'deep'
-    table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.createdby==user).all()
-    print('table is :')
-    print(table)
-    tabledata = []
-    for items in table:
-            data={}
-            data['requestid'] = items.request_id
-            data["customer"] = items.cname
-            data["product"] = items.product
-            data["version"] = items.version
-            data["component"] = items.component
-            data["instances"] = items.instances
-            tabledata.append(data)
-            print(data)
-            print(tabledata)
-            return render_template('testpage.html',user=user, tabledata=tabledata)
-    return render_template('loginerror.html')    
+  
 
 @app.route("/getproducts", methods=['POST', 'GET'])
 def get_products_per_customer():
@@ -284,12 +271,12 @@ def createformcollection(strjson):
         #print(response)
         for items in response:
             createdby = items['createdby']
-            dqqueryforrequestid = requestsmapping(id=None,customer=items['customer'],createdby=items['createdby'],createdate=None, status=None)
+            dqqueryforrequestid = requestsmapping(id=None,customer=items['customer'],createdby=createdby,createdate=None, status="NEW")
         db.session.add(dqqueryforrequestid)
         db.session.commit()
         for i in response:
             requestid=dqqueryforrequestid.id
-            insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'], createdby=i['createdby'],request_id=requestid)
+            insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'], createdby=i['createdby'],request_id=requestid, status="NEW")
             db.session.add(insertdatafordb)
         db.session.commit()
         db.session.close()
@@ -300,23 +287,47 @@ def createformcollection(strjson):
 def confirmlaunch():
             #server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
             #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
+    if 'username' in session:
+        user = session['username']
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status == "NEW").all()
+        print('table is :')
+        print(table)
+        tabledata = []
+        for items in table:
+            data={}
+            data['requestid'] = items.request_id
+            data["customer"] = items.cname
+            data["product"] = items.product
+            data["version"] = items.version
+            data["component"] = items.component
+            data["instances"] = items.instances
+            tabledata.append(data)
+            print(data)
+        print(tabledata)
+            
+            
+            server = jenkins.Jenkins('http://10.2.44.7:8080/', username='Deeptesh', password='abc@123')
+            #buildnow = server.build_job('Terraformexc',parameters=None, token='113ec33ef95893c89c950b912c9ae1dedc')
             #buildnow = server.build_job('terraformexec',parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
             #print(buildnow1)
             #print(buildnow)
-            #job="terraformexec"
-            #token="11a386d30a8cf98d061ee360682eb5fb24"
             
+            job="Terraformexc-instances"
+            token="113ec33ef95893c89c950b912c9ae1dedc"
+            
+            #id =
+            #request_id =
+            #product=
+            #version=
+            #component =
+            #instances = 
             #requestdatafromdb = db.session.query(Customers.cname, launchrequests.id, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.request_id==requestid).all()
             #print(requestdatafromdb)
             #buildjoburl = server.build_job_url('terraformexec', parameters=None, {'token': token})
-            
             #fetch parameters from DB
             
-
-
-            #buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'12', 'product':'nginx','version':'nginx:latest','component':'SDA','instances':'1'}, token=token)
+            #buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'2', 'product':'Gold_ACSCGUI','version':'v13.0','component':'Gold_ACSCGUI_v13.0_SP6_Template','instances':'1'}, token=token)
             #build_info = server.get_queue_item(buildnewjob, depth=0)
-            
             #print(listofjobs)
             #print(buildjoburl)
             #print(buildnewjob)
@@ -325,7 +336,19 @@ def confirmlaunch():
 
 #========ALL CODE ENDS HERE============
 
+# This particular route is for testing purposes only 
 
+@app.route("/testpage/", methods=['POST', 'GET'])
+def testpage():
+    if 'username' in session:
+        user = session['username']
+        form = LaunchInstanceForm()
+        form.customer.choices = [(customers.id,customers.cname)for customers in Customers.query.all()]#[(customers.id,customers.cname)for customers in Customers.query.all()]
+        form.product.choices = [(products.id, products.pname)for products in Products.query.all()] #.filter_by(id='1').all()
+        form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
+        form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
+        return render_template('launchinstances.html', form=form, user=user )
+    return render_template('testpage.html') 
 
 #========RUN APP WITH PRE-DEFINED CONFIGS============
 if __name__ == '__main__':
