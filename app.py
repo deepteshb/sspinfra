@@ -127,7 +127,7 @@ class LaunchInstanceForm(FlaskForm):
 def index():
     if 'username' in session:
         user = session['username']
-        print(user)
+        #print(user)
         return redirect(url_for('userservicelist'))
     return render_template('login.html')
 
@@ -151,8 +151,8 @@ def userservicelist():
     if 'username' in session:
         user = session['username']
         table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).all()
-        print('table is :')
-        print(table)
+        #print('table is :')
+        #print(table)
         tabledata = []
         for items in table:
             data={}
@@ -164,8 +164,8 @@ def userservicelist():
             data["instances"] = items.instances
             data["status"] = items.status
             tabledata.append(data)
-            print(data)
-        print(tabledata)
+            #print(data)
+        #print(tabledata)
         return render_template('userservicelist.html',user=user, tabledata=tabledata)        
     return render_template('loginerror.html')
 
@@ -200,9 +200,9 @@ def cisghome():
 def reviewinstances():
     if 'username' in session:
         user = session['username']
-        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).all()
-        print('table is :')
-        print(table)
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
+        #print('table is :')
+        #print(table)
         tabledata = []
         for items in table:
             data={}
@@ -212,9 +212,10 @@ def reviewinstances():
             data["version"] = items.version
             data["component"] = items.component
             data["instances"] = items.instances
+            data["status"] = items.status
             tabledata.append(data)
-            print(data)
-        print(tabledata)
+            #print(data)
+        #print(tabledata)
         return render_template('reviewinstances.html',user=user, tabledata=tabledata)
     return render_template('loginerror.html')                                                   
 
@@ -230,7 +231,7 @@ def get_products_per_customer():
             products["id"] = items.id
             products["product"] = items.pname
             availableproducts.append(products)
-            print(products)
+            #print(products)
         #print(availableproducts)
         return jsonify({"products" : availableproducts})
 
@@ -285,58 +286,39 @@ def createformcollection(strjson):
 
 @app.route("/confirmlaunch", methods=['POST', 'GET'])
 def confirmlaunch():
-            #server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
-            #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
+    #server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
+    #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
     if 'username' in session:
         user = session['username']
-        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status == "NEW").all()
-        print('table is :')
-        print(table)
+        server = jenkins.Jenkins('http://10.2.44.7:8080/', username='Deeptesh', password='abc@123')
+        job="Terraformexc-instances"
+        token="113ec33ef95893c89c950b912c9ae1dedc"
+        table = db.session.query(Customers.cname, launchrequests.id ,launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
         tabledata = []
         for items in table:
+            #print(items)
             data={}
+            data['id'] = items.id
             data['requestid'] = items.request_id
             data["customer"] = items.cname
             data["product"] = items.product
             data["version"] = items.version
             data["component"] = items.component
             data["instances"] = items.instances
-            tabledata.append(data)
-            print(data)
-        print(tabledata)
-            
-            
-            server = jenkins.Jenkins('http://10.2.44.7:8080/', username='Deeptesh', password='abc@123')
-            #buildnow = server.build_job('Terraformexc',parameters=None, token='113ec33ef95893c89c950b912c9ae1dedc')
-            #buildnow = server.build_job('terraformexec',parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
-            #print(buildnow1)
-            #print(buildnow)
-            
-            job="Terraformexc-instances"
-            token="113ec33ef95893c89c950b912c9ae1dedc"
-            
-            #id =
-            #request_id =
-            #product=
-            #version=
-            #component =
-            #instances = 
-            #requestdatafromdb = db.session.query(Customers.cname, launchrequests.id, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id).filter(launchrequests.customer==Customers.id).filter(launchrequests.request_id==requestid).all()
-            #print(requestdatafromdb)
-            #buildjoburl = server.build_job_url('terraformexec', parameters=None, {'token': token})
-            #fetch parameters from DB
-            
-            #buildnewjob=server.build_job(job, parameters={'id':'1','requestid':'2', 'product':'Gold_ACSCGUI','version':'v13.0','component':'Gold_ACSCGUI_v13.0_SP6_Template','instances':'1'}, token=token)
-            #build_info = server.get_queue_item(buildnewjob, depth=0)
-            #print(listofjobs)
-            #print(buildjoburl)
+            data["status"]= items.status
+            #buildnewjob=server.build_job(job, parameters={'id':data['id'],'requestid':data['requestid'], 'product':data['product'],'version':data['version'],'component':data['component'],'instances':data['instances']}, token=token)
+            buildnewjob=server.build_job(job, parameters={'id':data['id'],'requestid':data['requestid'],'customer':data['customer'], 'product':data['product'],'version':data['version'],'component':data['component'],'instances':data['instances']}, token=token)
+            print('printing new buildjob info')
             #print(buildnewjob)
-            #print(build_info)
-            return redirect(url_for('userservicelist'))
+            build_info = server.get_queue_item(buildnewjob, depth=0)
+            print(build_info)
+            tabledata.append(data)
+        return redirect(url_for('userservicelist'))
 
 #========ALL CODE ENDS HERE============
 
 # This particular route is for testing purposes only 
+
 
 @app.route("/testpage/", methods=['POST', 'GET'])
 def testpage():
@@ -348,7 +330,7 @@ def testpage():
         form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
         form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
         return render_template('launchinstances.html', form=form, user=user )
-    return render_template('testpage.html') 
+    return render_template('testpage.html')
 
 #========RUN APP WITH PRE-DEFINED CONFIGS============
 if __name__ == '__main__':
