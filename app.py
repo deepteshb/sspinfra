@@ -291,7 +291,8 @@ def confirmlaunch():
     if 'username' in session:
         user = session['username']
         server = jenkins.Jenkins('http://10.2.44.7:8080/', username='Deeptesh', password='abc@123')
-        job="Terraformexc-instances"
+        #job="Terraformexc-instances"
+        job="terraformexc-tf"
         token="113ec33ef95893c89c950b912c9ae1dedc"
         table = db.session.query(Customers.cname, launchrequests.id ,launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
         tabledata = []
@@ -334,4 +335,4 @@ def testpage():
 
 #========RUN APP WITH PRE-DEFINED CONFIGS============
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    app.run(host="0.0.0.0", debug=True, use_reloader=True)
