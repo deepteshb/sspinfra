@@ -28,6 +28,7 @@
             <th>Version</th>
             <th>Component</th>
             <th># Instances</th>
+            <th>Datastore</th>
           </tr>
         </thead>
         <tbody>
@@ -46,6 +47,9 @@
             </td>
             <td>
               {{form.instance(class="instance" , id='instance_1',)}}
+            </td>
+            <td>
+              {{form.datastore(class="datastore" , id='datastore_1',)}}
             </td>
           </tr>
         </tbody>
@@ -188,6 +192,9 @@ function updatecomponent(vers) {
         '<td>' +
         '{{form.instance(class="instance")}}' +
         '</td>' +
+        '<td>' +
+        '{{form.datastore(class="datastore")}}' +
+        '</td>' +
         '</tr>'
       );
       reAssignIdAndName();
@@ -223,6 +230,7 @@ function updatecomponent(vers) {
         var value = $("#" + id + " option:selected").text();
         //console.log(" id: " + id + " value: " + value);
         strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"" + ","
+        console.log(strjson)
       });
 
       $(this).find('td:nth-child(n)  input').each(function () {
@@ -233,11 +241,12 @@ function updatecomponent(vers) {
           //console.log(" id: " + id + " value: " + value);
           strjson = strjson + "\"" + id.substring(0, id.indexOf("_")) + "\"" + ":" + "\"" + value + "\"";
         }
+        console.log(strjson)
       });
       strjson = strjson + "},";
+      console.log(strjson)
     });
     strjson = strjson.substring(0, strjson.lastIndexOf(",")) + "]";
-
     console.log(strjson)
 
      $.ajax({

@@ -7,47 +7,7 @@
             <a class="btn btn-sg" href="{{url_for('launchinstances')}}"><i class="fa fa-step-backward"
                     aria-hidden="true"></i>&nbsp;Go Back</a>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>RequestID</th>
-                    <th>CUSTOMER</th>
-                    <th>PRODUCT</th>
-                    <th>VERSION</th>
-                    <th>COMPONENT</th>
-                    <th># INSTANCES</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for rows in tabledata %}
-                <tr>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3"><strong>{{rows['requestid']}}</strong></textarea>
-                  </td>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3">{{rows['customer']}}</textarea>
-                  </td>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3"><strong><i>{{rows['product']}}</i></strong></textarea>
-                  </td>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3">{{rows['version']}}</textarea>
-                  </td>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3">{{rows['component']}}</textarea>
-                  </td>
-                  <td>
-                    <text class="form-control" name="" id="" rows="3">{{rows['instances']}}</textarea>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-        </table>
-    </div>
-
-    <div>
-        <a class="btn btn-sg" href="{{url_for('confirmlaunch')}}">Confirm Launch <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-    </div>
+        <h1>Hello World</h1>
     {% endblock %}
     
  
