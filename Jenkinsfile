@@ -8,7 +8,7 @@ node('vmnode'){
         string(defaultValue: '1', name: 'version'),
         string(defaultValue: '1', name: 'component'),
         string(defaultValue: '1', name: 'instances'),
-        string(defaultValue: '"Pleasanton_LAB_DS"', name: 'datastore'),
+        string(defaultValue: '"ToBeChanged"', name: 'datastore'),
         ])])
 
     WORKSPACE = params.requestid
@@ -20,8 +20,7 @@ node('vmnode'){
                stage('CHECKOUT'){
                    
                    //git(url: 'https://github.com/deepteshb/sspinfratfmodules.git', branch: 'main' )
-                   //p4sync charset: 'none', credential: '88fc40cb-c21e-41d4-9c04-a92ed6f3f1b9', format: 'jenkins-${JOB_NAME}', populate: autoClean(delete: true, modtime: false, parallel: [enable: false, minbytes: '1024', minfiles: '1', threads: '4'], pin: '', quiet: true, replace: true, tidy: false), source: depotSource('//PSL_Devops/main/PSL_Devops/main/sgtfmodules/...')
-                   p4sync charset: 'none', credential: 'IPSysPerforce', format: 'jenkins-${NODE_NAME}-${JOB_NAME}', populate: autoClean(delete: true, modtime: false, parallel: [enable: false, minbytes: '1024', minfiles: '1', threads: '4'], pin: '', quiet: true, replace: true, tidy: false), source: depotSource('//PSL_Devops/main/PSL_Devops/main/sgtfmodules/...')
+                   //p4sync charset: 'none', credential: '88fc40cb-c21e-41d4-9c04-a92ed6f3f1b9', format: 'jenkins-${JOB_NAME}', populate: autoClean(delete: true, modtime: false, parallel: [enable: false, minbytes: '1024', minfiles: '1', threads: '4'], pin: '', quiet: true, replace: true, tidy: false), source: depotSource('Add a Source')
                    powershell '''
                    $currentlocation = Get-Location
                    Write-Host $currentlocation
@@ -29,7 +28,7 @@ node('vmnode'){
                    $destination = Get-Location
                    Write-Host $destination
                    
-                    Copy-Item -Path "C:\\Users\\IndiaAdmin\\template.tf" -Destination "$destination\\template.tf" -Recurse -Force
+                   Copy-Item -Path "C:\\Users\\IndiaAdmin\\template.tf" -Destination "$destination\\template.tf" -Recurse -Force
                    '''
                }
                 stage('GENERATE'){
@@ -105,8 +104,8 @@ node('vmnode'){
             def emailSubject = "SSPINFRA-INFRA PROVISIONING STATUS AND REPORT - Build Status"
             def machines = params.customer + params.product + params.version
             echo machines
-            emailext(mimeType: 'text/html', replyTo: 'deeptesh.bhattacharya@scientificgames.com', subject: emailSubject, to: "deeptesh.bhattacharya@scientificgames.com", body: emailBody + machines + msg )
-            //emailext attachLog: true, body: msg, subject: 'VM is successfully launched', to: 'deeeptesh.bhattacharya@scientificgames.com'
+            emailext(mimeType: 'text/html', replyTo: '', subject: emailSubject, to: "", body: emailBody + machines + msg )
+            //emailext attachLog: true, body: msg, subject: 'VM is successfully launched', to: ''
             echo "email has been successfully sent"
             echo "executing powershell for entering records in DB"
             powershell '''

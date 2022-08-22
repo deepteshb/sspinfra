@@ -28,7 +28,6 @@
             <th>Version</th>
             <th>Component</th>
             <th># Instances</th>
-            <th>Datastore</th>
           </tr>
         </thead>
         <tbody>
@@ -47,9 +46,6 @@
             </td>
             <td>
               {{form.instance(class="instance" , id='instance_1',)}}
-            </td>
-            <td>
-              {{form.datastore(class="datastore" , id='datastore_1',)}}
             </td>
           </tr>
         </tbody>
@@ -191,9 +187,6 @@ function updatecomponent(vers) {
         '</td>' +
         '<td>' +
         '{{form.instance(class="instance")}}' +
-        '</td>' +
-        '<td>' +
-        '{{form.datastore(class="datastore")}}' +
         '</td>' +
         '</tr>'
       );

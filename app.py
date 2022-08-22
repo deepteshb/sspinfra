@@ -26,8 +26,9 @@ app = Flask(__name__)
 #GLOBAL APP CONFIGURATION
 
 app.config['SECRET_KEY'] = os.urandom(24)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/myProjects/sspinfra/sspinfra.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:abc123@localhost:5432/sspinfra_dev"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:\Projects\sspinfra\sspinfra.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']='False'
+#app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:abc123@localhost:5432/sspinfra_dev"
 
 
 #============================================================================
@@ -91,7 +92,7 @@ class launchrequests(db.Model):
     version = db.Column(db.String)
     component = db.Column(db.String)
     instances = db.Column(db.Integer)
-    datastore = db.Column(db.String)
+    #datastore = db.Column(db.String)
     createdby = db.Column(db.String)
     request_id=db.Column(db.Integer, db.ForeignKey('requestsmapping.id'))
     status = db.Column(db.String)
@@ -104,9 +105,9 @@ class requestsmapping(db.Model):
     status=db.Column(db.String)
 #============================================================================
 
-class datastore(db.Model):
+""" class datastore(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    ds_name = db.Column(db.String)
+    ds_name = db.Column(db.String) """
 
 #DB-QUERIES
 
@@ -123,7 +124,7 @@ class LaunchInstanceForm(FlaskForm):
     component = SelectField('component', choices=[])
     version = SelectField('version', choices=[])
     instance = StringField('instance')
-    datastore = SelectField('datastore')
+    #datastore = SelectField('datastore')
     customer = SelectField('customer', choices=[])
     created_by = StringField('createdby')
 
@@ -185,7 +186,7 @@ def launchinstances():
         form.product.choices = [(products.id, products.pname)for products in Products.query.all()] #.filter_by(id='1').all()
         form.version.choices = ['--select--']#[(versions.id, versions.version)for versions in Versions.query]
         form.component.choices = ['--select--']#[(components.id, components.compname)for components in Components.query]
-        form.datastore.choices = [(datastore.id, datastore.ds_name)for datastore in datastore.query.all()]
+        #form.datastore.choices = [(datastore.id, datastore.ds_name)for datastore in datastore.query.all()]
         return render_template('launchinstances.html', form=form, user=user )
     return render_template('loginerror.html')
 
@@ -208,7 +209,7 @@ def cisghome():
 def reviewinstances():
     if 'username' in session:
         user = session['username']
-        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.datastore, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
+        table = db.session.query(Customers.cname, launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances,launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
         #print('table is :')
         #print(table)
         tabledata = []
@@ -220,7 +221,7 @@ def reviewinstances():
             data["version"] = items.version
             data["component"] = items.component
             data["instances"] = items.instances
-            data["datastore"] = items.datastore
+            #data["datastore"] = items.datastore
             data["status"] = items.status
             tabledata.append(data)
             #print(data)
@@ -286,7 +287,7 @@ def createformcollection(strjson):
         db.session.commit()
         for i in response:
             requestid=dqqueryforrequestid.id
-            insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'],datastore=i['datastore'], createdby=i['createdby'],request_id=requestid, status="NEW")
+            insertdatafordb=launchrequests(id=None,customer=i['customer'],product=i['product'],version=i['version'],component=i['component'],instances=i['instance'], createdby=i['createdby'],request_id=requestid, status="NEW")
             db.session.add(insertdatafordb)
         db.session.commit()
         db.session.close()
@@ -303,7 +304,7 @@ def confirmlaunch():
         #job="Terraformexc-instances"
         job="terraformexc-tf"
         token="113ec33ef95893c89c950b912c9ae1dedc"
-        table = db.session.query(Customers.cname, launchrequests.id ,launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.datastore, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
+        table = db.session.query(Customers.cname, launchrequests.id ,launchrequests.product, launchrequests.version, launchrequests.component, launchrequests.instances, launchrequests.request_id, launchrequests.status).filter(launchrequests.customer == Customers.id).filter(launchrequests.createdby == user).filter(launchrequests.status=='NEW').all()
         tabledata = []
         for items in table:
             #print(items)
@@ -315,10 +316,10 @@ def confirmlaunch():
             data["version"] = items.version
             data["component"] = items.component
             data["instances"] = items.instances
-            data["datastore"] = items.datastore
+            #data["datastore"] = items.datastore
             data["status"]= items.status
             #buildnewjob=server.build_job(job, parameters={'id':data['id'],'requestid':data['requestid'], 'product':data['product'],'version':data['version'],'component':data['component'],'instances':data['instances']}, token=token)
-            buildnewjob=server.build_job(job, parameters={'id':data['id'],'requestid':data['requestid'],'customer':data['customer'], 'product':data['product'],'version':data['version'],'component':data['component'],'instances':data['instances'],'datastore':data['datastore']}, token=token)
+            buildnewjob=server.build_job(job, parameters={'id':data['id'],'requestid':data['requestid'],'customer':data['customer'], 'product':data['product'],'version':data['version'],'component':data['component'],'instances':data['instances']}, token=token)
             print('printing new buildjob info')
             #print(buildnewjob)
             build_info = server.get_queue_item(buildnewjob, depth=0)
