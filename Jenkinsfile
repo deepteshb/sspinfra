@@ -20,7 +20,6 @@ node('vmnode'){
                stage('CHECKOUT'){
                    
                    //git(url: 'https://github.com/deepteshb/sspinfratfmodules.git', branch: 'main' )
-                   //p4sync charset: 'none', credential: '88fc40cb-c21e-41d4-9c04-a92ed6f3f1b9', format: 'jenkins-${JOB_NAME}', populate: autoClean(delete: true, modtime: false, parallel: [enable: false, minbytes: '1024', minfiles: '1', threads: '4'], pin: '', quiet: true, replace: true, tidy: false), source: depotSource('Add a Source')
                    powershell '''
                    $currentlocation = Get-Location
                    Write-Host $currentlocation
