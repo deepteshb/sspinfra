@@ -296,11 +296,11 @@ def createformcollection(strjson):
 
 @app.route("/confirmlaunch", methods=['POST', 'GET'])
 def confirmlaunch():
-    #server = jenkins.Jenkins('http://52.172.96.251:8080/', username='devopsadmin', password='Dresident1!!')
+    #server = jenkins.Jenkins('http://someip/', username='devopsadmin', password='Dresident1!!')
     #buildnow1 = server.build_job_url('terraformexec', parameters=None, token='11a386d30a8cf98d061ee360682eb5fb24')
     if 'username' in session:
         user = session['username']
-        server = jenkins.Jenkins('http://10.2.44.7:8080/', username='Deeptesh', password='abc@123')
+        server = jenkins.Jenkins('http://someinstance/', username='Deeptesh', password='abc@123')
         #job="Terraformexc-instances"
         job="terraformexc-tf"
         token="113ec33ef95893c89c950b912c9ae1dedc"
